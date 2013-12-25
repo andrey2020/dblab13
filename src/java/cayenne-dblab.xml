@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<domain project-version="6">
+	<map name="dblab"/>
+
+	<node name="dblabNode"
+		 factory="org.apache.cayenne.configuration.server.XMLPoolingDataSourceFactory"
+		>
+		<map-ref name="dblab"/>
+		<data-source>
+			<driver value="com.mysql.jdbc.Driver"/>
+			<url value="jdbc:mysql://192.168.33.49/Bergwerk"/>
+			<connectionPool min="1" max="999"/>
+			<login userName="admin" password="12345"/>
+		</data-source>
+	</node>
+</domain>

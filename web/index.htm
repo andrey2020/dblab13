@@ -1,0 +1,8 @@
+<a href="$context/report/Report.pdf">Download Report.pdf</a>
+<object type="application/pdf" width="100%" height="77%" data="$context/report/Report.pdf"/>
+#set ($flash = "") 
+#set ($flash = $session.flash) 
+#if ($flash != "")
+  <b>Flash Message:</b>
+  <p class="infoMsg">$flash</p>
+#end

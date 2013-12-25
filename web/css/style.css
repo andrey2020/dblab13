@@ -1,0 +1,118 @@
+html, body {
+  height: 590px;
+}
+
+body {
+    background:  #2c2f45;
+    margin: 12px 0px;
+    padding: 0;
+    font-family: Arial, Helvetica, "Sans Serif";
+}
+
+div.page {
+  margin: 0 auto;
+  text-align: left;
+  background: #ffffff;
+  width: 90%;
+  min-height: 100%;
+}
+
+div.header {
+  position: relative;
+  height: 95px;
+}
+
+div.title-icon {
+  position:absolute;
+  top: 12px;
+  left: 15px;
+  z-index:10;
+}
+
+div.title-left {
+    position: absolute;    
+    top: 6px;
+    left: 110px;    
+    color: navy;
+    font-size: 20pt;
+    font-weight: bolder;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+div.title-hosted {
+  position: absolute;  
+  right: 0px;
+}
+
+div.title-hosted p, div.title-hosted a {
+    color: navy;
+    font-size: 8pt;
+    text-align:right;
+    text-decoration: none;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+div.header-color {
+    position: absolute;
+    top: 50px;
+    background-color: #a80402;
+    font-size: 9pt;
+    height: 25px;
+    width: 100%;
+}
+
+div.contentbody {
+  width: calc(100%-2px);
+  height: 465px;
+  margin: 0 auto;
+  border: #a80402 solid 2px;
+}
+
+
+#menu {
+position:  absolute;
+margin-top: -18px;
+width: 100px;
+height: 515px;
+border: #a80402 solid 2px;
+text-align: center;
+}
+
+#content {
+    overflow-x: auto;
+    overflow-y: auto; 
+    margin-top: -18px;
+    margin-left: 106px;
+    height: 510px;
+    padding: 30px;
+    padding-bottom: 0px;
+    padding-top: 5px;
+    border: #a80402 solid 2px;
+}
+button.button {
+font-family: Arial, Helvetica, "Sans Serif";
+font-size: 9pt;
+width: 90px;
+height: 40px;
+}
+
+button.buttonReport {
+    position: absolute;
+    background: #1bef0d;
+    left: 1px;
+    left: 5px;
+    bottom: 12px;
+    font-weight: bold;
+    
+    font-family: Arial, Helvetica, "Sans Serif";
+font-size: 9pt;
+    
+    width: 90px;
+    height: 40px;
+}
+
+div.content h2 {
+  margin: 0;
+}
