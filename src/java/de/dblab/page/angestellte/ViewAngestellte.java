@@ -21,8 +21,13 @@ import de.dblab.page.TemplatePage;
 import de.dblab.service.DataBaseService;
 import java.util.List;
 import org.apache.click.control.AbstractLink;
+import org.apache.click.control.ActionLink;
+import org.apache.click.control.Checkbox;
 import org.apache.click.control.Column;
+import org.apache.click.control.PageLink;
 import org.apache.click.control.Table;
+import org.apache.click.extras.control.FieldColumn;
+import org.apache.click.extras.control.LinkDecorator;
 
 
 /**
@@ -46,6 +51,10 @@ public class ViewAngestellte extends TemplatePage{
         // Constructor -----------------------------------------------------------
     private AbstractLink viewLink;
     private AbstractLink editLink;
+    private FieldColumn column;
+    ActionLink removeLink = new ActionLink("Remove",this, "onRemoveClick");    
+    private FieldColumn columnRemove;
+    
 
     public ViewAngestellte() {
         addControl(form);
@@ -81,7 +90,24 @@ public class ViewAngestellte extends TemplatePage{
         table.addColumn(new Column("id","Id"));
         table.addColumn(new Column("name","Name"));
         table.addColumn(new Column("tief","Tief"));
-        table.addColumn(new Column("geschlossen","Ist geschlossen"));
+        Checkbox checkbox = new Checkbox();
+        checkbox.setDisabled(true);
+        column = new FieldColumn("geschlossen","Ist geschlossen", checkbox);
+        column.setTextAlign("center");
+        column.setWidth("50px");
+        table.addColumn(column);
+        
+        removeLink.setImageSrc("/images/form.png");
+        removeLink.setTitle("View Angestellte");
+        removeLink.setParameter("referrer", "/page/angestellte/AngestelltePage.htm");
+
+        AbstractLink[] links = new AbstractLink[] { removeLink };
+        columnRemove.setDecorator(new LinkDecorator(table, links, "id"));
+        columnRemove.setSortable(false);
+        columnRemove.setWidth("auto");
+        table.addColumn(columnRemove);
+        
+        
         
         table2.setClass(Table.CLASS_ITS);
         table2.addColumn(new Column("toSchaechte.id","Schacht ID"));
@@ -90,7 +116,6 @@ public class ViewAngestellte extends TemplatePage{
         table2.addColumn(new Column("zeitAusgang","Ausgang"));
         table2.setSortedColumn("zeitAusgang");
 
-       // table.restoreState(getContext());
     }
     
         /**
@@ -161,4 +186,12 @@ public class ViewAngestellte extends TemplatePage{
         return true;
     }
 
+    public boolean onRemoveClick(){
+        int id=removeLink.getValueInteger();
+        angestellte.removeFromSchaechteZulassung(dataBaseService.getSchaechteForID(id));
+        
+        
+        return true;
+    }
+    
 }
