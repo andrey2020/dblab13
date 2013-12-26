@@ -15,6 +15,7 @@ import org.apache.click.control.TextField;
 import org.apache.click.util.Bindable;
 import de.dblab.domain.Angestellte;
 import de.dblab.domain.Schaechte;
+import de.dblab.domain.Zeit;
 import de.dblab.page.HomePage;
 import de.dblab.page.TemplatePage;
 import de.dblab.service.DataBaseService;
@@ -39,9 +40,12 @@ public class ViewAngestellte extends TemplatePage{
     @Bindable protected Integer id;
     @Bindable protected String referrer;
     List<Schaechte> temp; 
+    List<Zeit> temp2; 
     private final DataBaseService dataBaseService = new DataBaseService();
     private final Table table = new Table("AngestellteZulassungSchaechte");
+    private final Table table2 = new Table("Zeit");
     Angestellte angestellte;
+    Zeit zeit;
         // Constructor -----------------------------------------------------------
     private AbstractLink viewLink;
     private AbstractLink editLink;
@@ -76,21 +80,19 @@ public class ViewAngestellte extends TemplatePage{
      public void initTable(){
         //addControl(table);
         table.setClass(Table.CLASS_ITS);
-        table.setPageSize(50);
-        table.setShowBanner(true);
-        table.setBannerPosition(Table.POSITION_TOP);
-        table.setSortable(false);
-        table.setWidth("100%");
-        
         table.addColumn(new Column("id","Id"));
         table.addColumn(new Column("name","Name"));
         table.addColumn(new Column("tief","Tief"));
         table.addColumn(new Column("geschlossen","Ist geschlossen"));
-
         //table.addColumn(new Column("id"));
-
         table.setRowList(temp);
-
+        
+        table2.setClass(Table.CLASS_ITS);
+        table2.addColumn(new Column("id","Id"));
+        table2.addColumn(new Column("name","Name"));
+        table2.addColumn(new Column("tief","Tief"));
+        table2.addColumn(new Column("geschlossen","Ist geschlossen"));
+        table2.setRowList(temp);
 
        // table.restoreState(getContext());
     }
@@ -110,12 +112,17 @@ public class ViewAngestellte extends TemplatePage{
                 // Copy angestellte data to form. The idField value will be set by
                 // this call
                 temp = angestellte.getSchaechteZulassung();
+                
                 initTable();
                 
                 form.copyFrom(angestellte);
             }
+           // zeit=dataBaseService.getZeitForID(id);
+            
+            
         }
 
+        
         if (referrer != null) {
             // Set HiddenField to bound referrer field
             referrerField.setValue(referrer);

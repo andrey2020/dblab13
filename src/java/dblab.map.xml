@@ -88,8 +88,8 @@
 	<obj-relationship name="leiterVonSchaechte" source="Angestellte" target="Schaechte" deleteRule="Deny" db-relationship-path="schaechteArray"/>
 	<obj-relationship name="schaechteZulassung" source="Angestellte" target="Schaechte" deleteRule="Deny" db-relationship-path="angestellteZulassungSchaechteArray.toSchaechte"/>
 	<obj-relationship name="zeitArray" source="Angestellte" target="Zeit" deleteRule="Deny" db-relationship-path="zeitArray"/>
-	<obj-relationship name="angestellteArray" source="Schaechte" target="Angestellte" deleteRule="Deny" db-relationship-path="angestellteZulassungSchaechteArray.toAngestellte"/>
-	<obj-relationship name="toAngestellte" source="Schaechte" target="Angestellte" deleteRule="Nullify" db-relationship-path="toAngestellte"/>
+	<obj-relationship name="angestellteZulassung" source="Schaechte" target="Angestellte" deleteRule="Deny" db-relationship-path="angestellteZulassungSchaechteArray.toAngestellte"/>
+	<obj-relationship name="leiterVonSchaechte" source="Schaechte" target="Angestellte" deleteRule="Nullify" db-relationship-path="toAngestellte"/>
 	<obj-relationship name="zeitArray" source="Schaechte" target="Zeit" deleteRule="Deny" db-relationship-path="zeitArray"/>
 	<obj-relationship name="toAngestellte" source="Zeit" target="Angestellte" deleteRule="Nullify" db-relationship-path="toAngestellte"/>
 	<obj-relationship name="toSchaechte" source="Zeit" target="Schaechte" deleteRule="Nullify" db-relationship-path="toSchaechte"/>
