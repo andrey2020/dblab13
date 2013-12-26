@@ -57,9 +57,12 @@ public class ViewAngestellte extends TemplatePage{
         form.add(fieldSet);
 
         TextField nameField = new TextField("name", true);
+        
+        TextField nachnameField = new TextField("nachname", true);
         nameField.setMinLength(5);
         nameField.setFocus(true);
         fieldSet.add(nameField);
+        fieldSet.add(nachnameField);
 
         
 
@@ -72,7 +75,7 @@ public class ViewAngestellte extends TemplatePage{
     
      public void initTable(){
         //addControl(table);
-        table.setClass(Table.CLASS_BLUE1);
+        table.setClass(Table.CLASS_ITS);
         table.setPageSize(50);
         table.setShowBanner(true);
         table.setBannerPosition(Table.POSITION_TOP);
@@ -101,12 +104,14 @@ public class ViewAngestellte extends TemplatePage{
     public void onGet() {
         if (id != null) {
             angestellte = dataBaseService.getAngestellteForID(id);
-            temp = angestellte.getSchaechteZulassung();
+            
             //AngestellteZulassungSchaechte.TO_SCHAECHTE
             if (angestellte != null) {
                 // Copy angestellte data to form. The idField value will be set by
                 // this call
+                temp = angestellte.getSchaechteZulassung();
                 initTable();
+                
                 form.copyFrom(angestellte);
             }
         }

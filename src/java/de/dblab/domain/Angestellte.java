@@ -43,7 +43,6 @@ public class Angestellte extends CayenneDataObject{
     }
     
    
-    public static final Property<List<Schaechte>> SCHAECHTEZULASSUNG = new Property<List<Schaechte>>("schaechteZulassung");
     public static final Property<Boolean> ENTLASSENE = new Property<Boolean>("entlassene");
     public static final Property<java.sql.Date> GEBURTSDATUM = new Property<java.sql.Date>("geburtsdatum","Geburtsdatum",4);
     public static final Property<Integer> GEHALT = new Property<Integer>("gehalt","Gehalt",3);
@@ -51,8 +50,10 @@ public class Angestellte extends CayenneDataObject{
     public static final Property<String> NACHNAME = new Property<String>("nachname","Nachname",1);
     public static final Property<String> NAME = new Property<String>("name","Name",0);
     public static final Property<String> STELLE = new Property<String>("stelle","Stelle",2);
-    public static final Property<List<Schaechte>> SCHAECHTE_ARRAY = new Property<List<Schaechte>>("schaechteArray");
+    
+    public static final Property<List<Schaechte>> LEITERVONSCHAECHTE = new Property<List<Schaechte>>("leiterVonSchaechte");
     public static final Property<List<Zeit>> ZEIT_ARRAY = new Property<List<Zeit>>("zeitArray");
+    public static final Property<List<Schaechte>> SCHAECHTEZULASSUNG = new Property<List<Schaechte>>("schaechteZulassung");
 
     public static final Property[] visiblyColumnAngestellte = {Angestellte.NAME,
                                                            Angestellte.NACHNAME,
@@ -62,10 +63,10 @@ public class Angestellte extends CayenneDataObject{
                                                            Angestellte.ID};
     
     public void setEntlassene(Boolean entlassene) {
-        writeProperty("entlassene", entlassene);
+        writeProperty(ENTLASSENE.getName(), entlassene);
     }
     public Boolean getEntlassene() {
-        return (Boolean)readProperty("entlassene");
+        return (Boolean)readProperty(ENTLASSENE.getName());
     }
 
     public void setGeburtsdatum(Date geburtsdatum) {
@@ -110,15 +111,15 @@ public class Angestellte extends CayenneDataObject{
         return (String)readProperty("stelle");
     }
 
-    public void addToSchaechteArray(Schaechte obj) {
-        addToManyTarget("schaechteArray", obj, true);
+    public void addToLeiterVonSchaechte(Schaechte obj) {
+        addToManyTarget(LEITERVONSCHAECHTE.getName(), obj, true);
     }
-    public void removeFromSchaechteArray(Schaechte obj) {
-        removeToManyTarget("schaechteArray", obj, true);
+    public void removeFromLeiterVonSchaechte(Schaechte obj) {
+        removeToManyTarget(LEITERVONSCHAECHTE.getName(), obj, true);
     }
     @SuppressWarnings("unchecked")
-    public List<Schaechte> getSchaechteArray() {
-        return (List<Schaechte>)readProperty("schaechteArray");
+    public List<Schaechte> getLeiterVonSchaechte() {
+        return (List<Schaechte>)readProperty(LEITERVONSCHAECHTE.getName());
     }
 
 

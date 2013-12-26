@@ -3,8 +3,7 @@
 	<map name="dblab"/>
 
 	<node name="dblabNode"
-		 factory="org.apache.cayenne.configuration.server.XMLPoolingDataSourceFactory"
-		>
+		 factory="org.apache.cayenne.configuration.server.XMLPoolingDataSourceFactory">
 		<map-ref name="dblab"/>
 		<data-source>
 			<driver value="com.mysql.jdbc.Driver"/>
