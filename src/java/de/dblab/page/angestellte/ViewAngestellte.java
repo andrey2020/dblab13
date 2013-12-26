@@ -53,7 +53,7 @@ public class ViewAngestellte extends TemplatePage{
     private AbstractLink editLink;
     private FieldColumn column;
     ActionLink removeLink = new ActionLink("Remove",this, "onRemoveClick");    
-    private FieldColumn columnRemove;
+   
     
 
     public ViewAngestellte() {
@@ -97,12 +97,14 @@ public class ViewAngestellte extends TemplatePage{
         column.setWidth("50px");
         table.addColumn(column);
         
-        removeLink.setImageSrc("/images/form.png");
-        removeLink.setTitle("View Angestellte");
-        removeLink.setParameter("referrer", "/page/angestellte/AngestelltePage.htm");
-
+        addControl(removeLink);
+        removeLink.setImageSrc("/images/delete.gif");
+        removeLink.setTitle("Remove Schacht Zulassung");
+        removeLink.setAttribute("onclick", "return window.confirm('Are you sure you want to delete this record?');");        
         AbstractLink[] links = new AbstractLink[] { removeLink };
+        Column columnRemove=new Column("Action");
         columnRemove.setDecorator(new LinkDecorator(table, links, "id"));
+        columnRemove.setTextAlign("center");
         columnRemove.setSortable(false);
         columnRemove.setWidth("auto");
         table.addColumn(columnRemove);
