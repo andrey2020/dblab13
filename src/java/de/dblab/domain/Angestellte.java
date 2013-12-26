@@ -70,45 +70,45 @@ public class Angestellte extends CayenneDataObject{
     }
 
     public void setGeburtsdatum(Date geburtsdatum) {
-        writeProperty("geburtsdatum", geburtsdatum);
+        writeProperty(GEBURTSDATUM.getName(), geburtsdatum);
     }
     public Date getGeburtsdatum() {
-        return (Date)readProperty("geburtsdatum");
+        return (Date)readProperty(GEBURTSDATUM.getName());
     }
 
     public void setGehalt(Integer gehalt) {
-        writeProperty("gehalt", gehalt);
+        writeProperty(GEHALT.getName(), gehalt);
     }
     public Integer getGehalt() {
-        return (Integer)readProperty("gehalt");
+        return (Integer)readProperty(GEHALT.getName());
     }
 
     public void setId(Integer id) {
-        writeProperty("id", id);
+        writeProperty(ID.getName(), id);
     }
     public Integer getId() {
-        return (Integer)readProperty("id");
+        return (Integer)readProperty(ID.getName());
     }
 
     public void setNachname(String nachname) {
-        writeProperty("nachname", nachname);
+        writeProperty(NACHNAME.getName(), nachname);
     }
     public String getNachname() {
-        return (String)readProperty("nachname");
+        return (String)readProperty(NACHNAME.getName());
     }
 
     public void setName(String name) {
-        writeProperty("name", name);
+        writeProperty(NAME.getName(), name);
     }
     public String getName() {
-        return (String)readProperty("name");
+        return (String)readProperty(NAME.getName());
     }
 
     public void setStelle(String stelle) {
-        writeProperty("stelle", stelle);
+        writeProperty(STELLE.getName(), stelle);
     }
     public String getStelle() {
-        return (String)readProperty("stelle");
+        return (String)readProperty(STELLE.getName());
     }
 
     public void addToLeiterVonSchaechte(Schaechte obj) {
@@ -136,14 +136,14 @@ public class Angestellte extends CayenneDataObject{
 
 
     public void addToZeitArray(Zeit obj) {
-        addToManyTarget("zeitArray", obj, true);
+        addToManyTarget(ZEIT_ARRAY.getName(), obj, true);
     }
     public void removeFromZeitArray(Zeit obj) {
-        removeToManyTarget("zeitArray", obj, true);
+        removeToManyTarget(ZEIT_ARRAY.getName(), obj, true);
     }
     @SuppressWarnings("unchecked")
     public List<Zeit> getZeitArray() {
-        return (List<Zeit>)readProperty("zeitArray");
+        return (List<Zeit>)readProperty(ZEIT_ARRAY.getName());
     }
 
 }
