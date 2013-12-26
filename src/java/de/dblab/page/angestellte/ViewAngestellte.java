@@ -39,8 +39,6 @@ public class ViewAngestellte extends TemplatePage{
     // Bindable variables can automatically have their value set by request parameters
     @Bindable protected Integer id;
     @Bindable protected String referrer;
-    List<Schaechte> temp; 
-    List<Zeit> temp2; 
     private final DataBaseService dataBaseService = new DataBaseService();
     private final Table table = new Table("AngestellteZulassungSchaechte");
     private final Table table2 = new Table("Zeit");
@@ -73,6 +71,7 @@ public class ViewAngestellte extends TemplatePage{
         form.add(new Submit("ok", "  OK  ", this, "onOkClick"));
         form.add(new Submit("cancel", this, "onCancelClick"));
         form.add(table);
+        form.add(table2);
         
     }
     
@@ -83,14 +82,13 @@ public class ViewAngestellte extends TemplatePage{
         table.addColumn(new Column("name","Name"));
         table.addColumn(new Column("tief","Tief"));
         table.addColumn(new Column("geschlossen","Ist geschlossen"));
-        //table.addColumn(new Column("id"));
-        table.setRowList(temp);
         
-//        table2.setClass(Table.CLASS_ITS);
-  //      table2.addColumn(new Column("toSchaechte","Schacht"));
-    //    table2.addColumn(new Column("zeitEingang","Eingang"));
-      //  table2.addColumn(new Column("zeitAusgang","Ausgang"));
-    //    table2.setRowList(temp2);
+        table2.setClass(Table.CLASS_ITS);
+        table2.addColumn(new Column("toSchaechte.id","Schacht ID"));
+        table2.addColumn(new Column("toSchaechte.name","Schacht Name"));
+        table2.addColumn(new Column("zeitEingang","Eingang"));
+        table2.addColumn(new Column("zeitAusgang","Ausgang"));
+        table2.setSortedColumn("zeitAusgang");
 
        // table.restoreState(getContext());
     }
@@ -109,10 +107,10 @@ public class ViewAngestellte extends TemplatePage{
             if (angestellte != null) {
                 // Copy angestellte data to form. The idField value will be set by
                 // this call
-                temp = angestellte.getSchaechteZulassung();
-     //           temp2=angestellte.getZeitArray();
-                initTable();
                 
+                initTable();
+                table.setRowList(angestellte.getSchaechteZulassung());
+                table2.setRowList(angestellte.getZeitArray());
                 form.copyFrom(angestellte);
             }
             
