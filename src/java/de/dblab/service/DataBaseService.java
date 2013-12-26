@@ -41,8 +41,4 @@ public class DataBaseService {
         return (Angestellte) context.performQuery(new SelectQuery(Angestellte.class, Angestellte.ID.eq(id))).get(0);
     }
     
-//     public Zeit getZeitForID(Integer id) {
-  //      return (Zeit) context.performQuery(new SelectQuery(Zeit.class, Zeit.TO_ANGESTELLTE.ID.eq(id))).get(0);
-    //}
-    
  }
