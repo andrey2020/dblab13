@@ -45,7 +45,6 @@ public class ViewAngestellte extends TemplatePage{
     private final Table table = new Table("AngestellteZulassungSchaechte");
     private final Table table2 = new Table("Zeit");
     Angestellte angestellte;
-    Zeit zeit;
         // Constructor -----------------------------------------------------------
     private AbstractLink viewLink;
     private AbstractLink editLink;
@@ -87,12 +86,11 @@ public class ViewAngestellte extends TemplatePage{
         //table.addColumn(new Column("id"));
         table.setRowList(temp);
         
-        table2.setClass(Table.CLASS_ITS);
-        table2.addColumn(new Column("id","Id"));
-        table2.addColumn(new Column("name","Name"));
-        table2.addColumn(new Column("tief","Tief"));
-        table2.addColumn(new Column("geschlossen","Ist geschlossen"));
-        table2.setRowList(temp);
+//        table2.setClass(Table.CLASS_ITS);
+  //      table2.addColumn(new Column("toSchaechte","Schacht"));
+    //    table2.addColumn(new Column("zeitEingang","Eingang"));
+      //  table2.addColumn(new Column("zeitAusgang","Ausgang"));
+    //    table2.setRowList(temp2);
 
        // table.restoreState(getContext());
     }
@@ -112,12 +110,12 @@ public class ViewAngestellte extends TemplatePage{
                 // Copy angestellte data to form. The idField value will be set by
                 // this call
                 temp = angestellte.getSchaechteZulassung();
-                
+     //           temp2=angestellte.getZeitArray();
                 initTable();
                 
                 form.copyFrom(angestellte);
             }
-           // zeit=dataBaseService.getZeitForID(id);
+            
             
             
         }
