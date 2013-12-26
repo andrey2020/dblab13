@@ -4,7 +4,7 @@ import java.util.List;
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.exp.Property;
 
-public abstract class Schaechte extends CayenneDataObject {
+public class Schaechte extends CayenneDataObject {
 
     public static final String ID_PK_COLUMN = "id";
 

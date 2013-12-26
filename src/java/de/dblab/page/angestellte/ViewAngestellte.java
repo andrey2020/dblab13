@@ -73,6 +73,7 @@ public class ViewAngestellte extends TemplatePage{
         form.add(new Submit("ok", "  OK  ", this, "onOkClick"));
         form.add(new Submit("cancel", this, "onCancelClick"));
         form.add(table);
+        form.add(table2);
         
     }
     
@@ -84,13 +85,13 @@ public class ViewAngestellte extends TemplatePage{
         table.addColumn(new Column("tief","Tief"));
         table.addColumn(new Column("geschlossen","Ist geschlossen"));
         //table.addColumn(new Column("id"));
-        table.setRowList(temp);
+       // table.setRowList(temp);
         
-//        table2.setClass(Table.CLASS_ITS);
-  //      table2.addColumn(new Column("toSchaechte","Schacht"));
-    //    table2.addColumn(new Column("zeitEingang","Eingang"));
-      //  table2.addColumn(new Column("zeitAusgang","Ausgang"));
-    //    table2.setRowList(temp2);
+        table2.setClass(Table.CLASS_ITS);
+        table2.addColumn(new Column("toSchaechte","Schacht"));
+        table2.addColumn(new Column("zeitEingang","Eingang"));
+        table2.addColumn(new Column("zeitAusgang","Ausgang"));
+        table2.setRowList(temp2);
 
        // table.restoreState(getContext());
     }
@@ -109,10 +110,11 @@ public class ViewAngestellte extends TemplatePage{
             if (angestellte != null) {
                 // Copy angestellte data to form. The idField value will be set by
                 // this call
-                temp = angestellte.getSchaechteZulassung();
-     //           temp2=angestellte.getZeitArray();
-                initTable();
+                temp=angestellte.getSchaechteZulassung();
+                temp2=angestellte.getZeitArray();
                 
+                initTable();
+                table.setRowList(temp);
                 form.copyFrom(angestellte);
             }
             
