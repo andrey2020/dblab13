@@ -5,14 +5,10 @@
 package de.dblab.page.angestellte;
 
 import de.dblab.domain.Angestellte;
-import org.apache.click.ActionListener;
-import org.apache.click.Control;
 import org.apache.click.control.FieldSet;
 import org.apache.click.control.Form;
-import org.apache.click.control.PageLink;
 import org.apache.click.control.Select;
 import org.apache.click.control.Submit;
-import org.apache.click.control.Table;
 import org.apache.click.control.TextField;
 
 /**
@@ -20,15 +16,13 @@ import org.apache.click.control.TextField;
  * @author anuta
  */
 public class SearchForm extends Form{
-    Table table;
     TextField searchField = new TextField("Suche","Was?");    
     Select sizeSelect = new Select("pageSize","Seitengröße");
     Select typeSelect = new Select("Typ","Wo?");
     Select firedSelect = new Select("zeigenEntlassente","");
 
-    public SearchForm(Table receivedTable){
+    public SearchForm(){
         super("form");
-        table=receivedTable;
         Submit submit = new Submit("suchen");
     
         FieldSet paymentFieldSet = new FieldSet("Suchen");
