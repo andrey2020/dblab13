@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package de.dblab.component;
+package de.dblab.page.angestellte;
 
 
 import org.apache.click.control.FieldSet;
