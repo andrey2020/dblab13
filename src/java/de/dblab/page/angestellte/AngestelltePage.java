@@ -1,6 +1,7 @@
 package de.dblab.page.angestellte;
 
 
+import de.dblab.component.AngestelterForm;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,6 +25,7 @@ import org.apache.click.element.JsScript;
 import org.apache.click.extras.control.FieldColumn;
 import org.apache.click.extras.control.LinkDecorator;
 import de.dblab.domain.Angestellte;
+import de.dblab.domain.Schaechte;
 import de.dblab.page.TemplatePage;
 import de.dblab.service.DataBaseService;
 import java.text.ParseException;
@@ -38,9 +40,9 @@ public final class AngestelltePage extends TemplatePage {
     private static final long serialVersionUID = 1L;
 
     private final Table table = new Table("table");
+    public static int angId = 0;
     private final PageLink editLink = new PageLink("Edit", EditAngestellte.class);
-    PageLink viewLink = new PageLink("View", ViewAngestellte.class);    
-    
+    private ActionLink viewLink = new ActionLink("view", "View");
     private final Form form = new Form("form");
     private final RegexField searchField = new RegexField("Suche","Was?");
     private final Select typeSelect = new Select("Typ","Wo?");
@@ -59,13 +61,16 @@ public final class AngestelltePage extends TemplatePage {
     private Column column;
     private final Select sizeSelect = new Select("pageSize","Seitengröße");
     
-    //@Resource(name="dataBaseService")
-    private final DataBaseService dataBaseService = new DataBaseService();
+    
+    private final AngestelterForm detailForm;
+
+    public static final DataBaseService dataBaseService = new DataBaseService();
 
 
     // Constructor ------------------------------------------------------------
 
     public AngestelltePage() {
+        this.detailForm = new AngestelterForm();
         initNewForm();
         initForm();
         initTable();
@@ -73,6 +78,27 @@ public final class AngestelltePage extends TemplatePage {
     
     public void initTable(){
         addControl(table);
+        addControl(viewLink);
+       
+        table.getControlLink().addBehavior(new DefaultAjaxBehavior() {
+            @Override
+            public ActionResult onAction(Control source) {
+                table.saveState(getContext());
+                table.onProcess();
+                return new ActionResult(table.toString(), ActionResult.HTML);
+         }});
+        
+        viewLink.addBehavior(new DefaultAjaxBehavior() {
+            @Override
+            public ActionResult onAction(Control source) {
+                angId = viewLink.getValueInteger();
+                detailForm.copyFrom(dataBaseService.getAngestellteForID(angId));
+                return new ActionResult(detailForm.toString(), ActionResult.HTML);
+            }
+        });
+        
+        
+        
         table.setClass(Table.CLASS_ISI);
         table.setPageSize(Integer.valueOf(sizeSelect.getValue()));
         table.setShowBanner(true);
@@ -103,11 +129,12 @@ public final class AngestelltePage extends TemplatePage {
         column.setWidth("50px");
         table.addColumn(column);
         
-
+        viewLink.setAttribute("name", "View");
         viewLink.setImageSrc("/images/form.png");
-        viewLink.setTitle("View Angestellte");
-        viewLink.setParameter("referrer", "/page/angestellte/AngestelltePage.htm");
-
+        viewLink.setTitle("View");
+        //viewLink.setParameter("referrer", "/page/angestellte/AngestelltePage.htm");
+        
+            
         editLink.setImageSrc("/images/table-edit.png");
         editLink.setTitle("Edit Angestellte");
         editLink.setParameter("referrer", "/AngestelltePage.htm");
@@ -123,13 +150,7 @@ public final class AngestelltePage extends TemplatePage {
         columnViewEdit.setWidth("auto");
         table.addColumn(columnViewEdit);
         
-        table.getControlLink().addBehavior(new DefaultAjaxBehavior() {
-            @Override
-            public ActionResult onAction(Control source) {
-                table.saveState(getContext());
-                table.onProcess();
-                return new ActionResult(table.toString(), ActionResult.HTML);
-            }});
+
         
         table.setDataProvider(new DataProvider<Angestellte>() {
             
@@ -238,10 +259,11 @@ public final class AngestelltePage extends TemplatePage {
  
     }
     
+ 
     
     @Override
     public void onPost() {
-
+        detailForm.copyFrom(dataBaseService.getAngestellteForID(angId));
         form.saveState(getContext());
         table.saveState(getContext());
     }

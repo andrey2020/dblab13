@@ -6,7 +6,7 @@
 	<property name="defaultPackage" value="de.dblab.domain"/>
 	<db-entity name="Angestellte" catalog="Bergwerk">
 		<db-attribute name="entlassene" type="BIT" isMandatory="true"/>
-		<db-attribute name="geburtsdatum" type="DATE" isMandatory="true" length="10"/>
+		<db-attribute name="geburtsdatum" type="DATE" length="10"/>
 		<db-attribute name="gehalt" type="INTEGER" length="10"/>
 		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
 		<db-attribute name="nachname" type="VARCHAR" length="45"/>
@@ -51,6 +51,13 @@
 		<obj-attribute name="zeitAusgang" type="java.util.Date" db-attribute-path="Zeit_Ausgang"/>
 		<obj-attribute name="zeitEingang" type="java.util.Date" db-attribute-path="Zeit_Eingang"/>
 	</obj-entity>
+        <obj-entity name="Zulassung" className="de.dblab.domain.Zulassung" dbEntityName="Angestellte_Zulassung_Schaechte">
+		<obj-attribute name="angestellteId" type="java.lang.Integer" db-attribute-path="Angestellte_id"/>
+		<obj-attribute name="schaechteId" type="java.lang.Integer" db-attribute-path="Schaechte_id"/>
+	</obj-entity>
+
+        
+        
         
 	<db-relationship name="angestellteZulassungSchaechteArray" source="Angestellte" target="Angestellte_Zulassung_Schaechte" toDependentPK="true" toMany="true">
 		<db-attribute-pair source="id" target="Angestellte_id"/>

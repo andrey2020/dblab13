@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package de.dblab.page.angestellte;
+package de.dblab.component;
 
 
 import org.apache.click.control.FieldSet;
@@ -19,13 +19,20 @@ import de.dblab.domain.Zeit;
 import de.dblab.page.HomePage;
 import de.dblab.page.TemplatePage;
 import de.dblab.service.DataBaseService;
+import java.util.HashMap;
 import java.util.List;
+import org.apache.click.ActionResult;
+import org.apache.click.Control;
+import org.apache.click.ajax.DefaultAjaxBehavior;
 import org.apache.click.control.AbstractLink;
 import org.apache.click.control.ActionLink;
 import org.apache.click.control.Checkbox;
 import org.apache.click.control.Column;
 import org.apache.click.control.PageLink;
 import org.apache.click.control.Table;
+import org.apache.click.element.Element;
+import org.apache.click.element.JsImport;
+import org.apache.click.element.JsScript;
 import org.apache.click.extras.control.FieldColumn;
 import org.apache.click.extras.control.LinkDecorator;
 
@@ -34,7 +41,7 @@ import org.apache.click.extras.control.LinkDecorator;
  *
  * @author andrey
  */
-public class ViewAngestellte extends TemplatePage{
+public final class ViewAngestellte extends TemplatePage{
     private static final long serialVersionUID = 1L;
 
     private final Form form = new Form("form");
@@ -45,23 +52,40 @@ public class ViewAngestellte extends TemplatePage{
     @Bindable protected Integer id;
     @Bindable protected String referrer;
     private final DataBaseService dataBaseService = new DataBaseService();
-    private final Table table = new Table("AngestellteZulassungSchaechte");
+    private final Table table = new Table("table");
     private final Table table2 = new Table("Zeit");
     Angestellte angestellte;
         // Constructor -----------------------------------------------------------
-    private AbstractLink viewLink;
-    private AbstractLink editLink;
+
     private FieldColumn column;
-    ActionLink removeLink = new ActionLink("Remove",this, "onRemoveClick");    
-   
+     ActionLink removeLink = new ActionLink("remove", "Remove", this, "onRemoveClick");
+    //PageLink removeLink = new PageLink("View", ViewAngestellte.class); 
     
 
     public ViewAngestellte() {
+        
+        
+        
         addControl(form);
-
+             
+         addControl(removeLink);
+         addControl(table);
         form.add(referrerField);
 
         form.add(idField);
+        
+                addControl(removeLink);
+        removeLink.addBehavior(new DefaultAjaxBehavior() {
+
+            @Override
+            public ActionResult onAction(Control source) {
+                Schaechte customer = dataBaseService.getSchaechteForID(removeLink.getValueInteger());
+                return new ActionResult("Delete Clicked for customer: " + customer.getName(), ActionResult.TEXT);
+            }
+        });
+        
+        
+        
 
         FieldSet fieldSet = new FieldSet("angestellter");
         form.add(fieldSet);
@@ -79,13 +103,16 @@ public class ViewAngestellte extends TemplatePage{
 
         form.add(new Submit("ok", "  OK  ", this, "onOkClick"));
         form.add(new Submit("cancel", this, "onCancelClick"));
-        form.add(table);
+        //form.add(table);
         form.add(table2);
         
     }
     
      public void initTable(){
         //addControl(table);
+
+         //table.setSortable(true);
+         
         table.setClass(Table.CLASS_ITS);
         table.addColumn(new Column("id","Id"));
         table.addColumn(new Column("name","Name"));
@@ -96,11 +123,14 @@ public class ViewAngestellte extends TemplatePage{
         column.setTextAlign("center");
         column.setWidth("50px");
         table.addColumn(column);
+        //removeLink = new ActionLink("Remove",this, "onRemoveClick");   
         
-        addControl(removeLink);
+        
+   
+        
         removeLink.setImageSrc("/images/delete.gif");
         removeLink.setTitle("Remove Schacht Zulassung");
-        removeLink.setAttribute("onclick", "return window.confirm('Are you sure you want to delete this record?');");        
+       // removeLink.setAttribute("onclick", "return window.confirm('Are you sure you want to delete this record?');");        
         AbstractLink[] links = new AbstractLink[] { removeLink };
         Column columnRemove=new Column("Action");
         columnRemove.setDecorator(new LinkDecorator(table, links, "id"));
@@ -117,6 +147,16 @@ public class ViewAngestellte extends TemplatePage{
         table2.addColumn(new Column("zeitEingang","Eingang"));
         table2.addColumn(new Column("zeitAusgang","Ausgang"));
         table2.setSortedColumn("zeitAusgang");
+        
+        
+        
+                table.getControlLink().addBehavior(new DefaultAjaxBehavior() {
+            @Override
+            public ActionResult onAction(Control source) {
+                table.saveState(getContext());
+                table.onProcess();
+                return new ActionResult(table.toString(), ActionResult.HTML);
+            }});
 
     }
     
@@ -140,18 +180,37 @@ public class ViewAngestellte extends TemplatePage{
                 table2.setRowList(angestellte.getZeitArray());
                 form.copyFrom(angestellte);
             }
-            
-            
-            
-        }
+    }
 
-        
+        form.restoreState(getContext());
         if (referrer != null) {
             // Set HiddenField to bound referrer field
             referrerField.setValue(referrer);
         }
     }
+    
+    @Override
+        public void onDestroy() {
+            
+            table.setClass(Table.CLASS_MARS);
+    }
+    
+    
+    @Override
+    public void onPost() {
 
+        form.saveState(getContext());
+        table.saveState(getContext());
+    }
+    
+    @Override
+    public void onRender() {
+        
+        table.setSortable(true);
+        
+    }
+        
+        
     public boolean onOkClick() {
         if (form.isValid()) {
             Integer id = (Integer) idField.getValueObject();
@@ -162,7 +221,7 @@ public class ViewAngestellte extends TemplatePage{
             }
             form.copyTo(angestellte);
 
-            dataBaseService.saveAngestellte(angestellte);
+           // dataBaseService.saveAngestellte(angestellte);
 
             String referrer = referrerField.getValue();
             if (referrer != null) {
@@ -178,6 +237,17 @@ public class ViewAngestellte extends TemplatePage{
         }
     }
 
+    public boolean onRemoveClick() {
+        String referrer1 = referrerField.getValue();
+        if (referrer1 != null) {
+            setRedirect(referrer1);
+        } else {
+            setRedirect(HomePage.class);
+        }
+        return true;
+    }
+    
+    
     public boolean onCancelClick() {
         String referrer1 = referrerField.getValue();
         if (referrer1 != null) {
@@ -188,12 +258,14 @@ public class ViewAngestellte extends TemplatePage{
         return true;
     }
 
-    public boolean onRemoveClick(){
-        int id=removeLink.getValueInteger();
-        angestellte.removeFromSchaechteZulassung(dataBaseService.getSchaechteForID(id));
-        
-        
-        return true;
+    @Override
+    public List<Element> getHeadElements() {
+        if (headElements == null) { 
+            headElements = super.getHeadElements();
+            headElements.add(new JsImport("/script/js/jquery-1.4.2.js"));
+            headElements.add(new JsScript("/script/table-ajax.js", new HashMap()));
+        }
+        return headElements;
     }
     
 }

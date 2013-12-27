@@ -5,7 +5,7 @@
 <click-app charset="UTF-8" locale="de">
     <pages package="de.dblab.page">
         <page path="page/angestellte/AngestelltePage.htm" classname="de.dblab.page.angestellte.AngestelltePage"/>
-        <page path="page/angestellte/view-angestellte.htm" classname="de.dblab.page.angestellte.ViewAngestellte"/>
+        
         <page path="page/schaechte/SchaechtePage.htm" classname="de.dblab.page.schaechte.SchaechtePage"/>
         <page path="index.htm" classname="de.dblab.page.HomePage"/>
     </pages>
