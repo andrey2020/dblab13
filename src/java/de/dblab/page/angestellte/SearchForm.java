@@ -16,10 +16,10 @@ import org.apache.click.control.TextField;
  * @author anuta
  */
 public class SearchForm extends Form{
-    TextField searchField = new TextField("Suche","Was?");    
-    Select sizeSelect = new Select("pageSize","Seitengröße");
-    Select typeSelect = new Select("Typ","Wo?");
-    Select firedSelect = new Select("zeigenEntlassente","");
+    public final TextField searchField = new TextField("Suche","Was?");    
+    public final Select sizeSelect = new Select("pageSize","Seitengröße");
+    public final Select typeSelect = new Select("Typ","Wo?");
+    public final Select firedSelect = new Select("zeigenEntlassente","");
 
     public SearchForm(){
         super("form");
