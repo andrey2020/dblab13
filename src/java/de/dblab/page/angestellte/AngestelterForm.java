@@ -13,6 +13,7 @@ import static de.dblab.page.angestellte.AngestelltePage.angId;
 import static de.dblab.page.angestellte.AngestelltePage.dataBaseService;
 import de.dblab.service.DataBaseService;
 import java.util.List;
+import net.sf.click.extras.control.CalendarField;
 import org.apache.click.ActionResult;
 import org.apache.click.Control;
 import org.apache.click.ajax.DefaultAjaxBehavior;
@@ -70,7 +71,7 @@ public final class AngestelterForm extends Form{
         idField.setDisabled(true);
         TextField nameField = new TextField("name", true);
         TextField nachnameField = new TextField("nachname", true);
-        DateField gebutsDatumField = new DateField("geburtsdatum", true);
+        CalendarField gebutsDatumField = new CalendarField("gebutrtsdatum","Geburtsdatum",true);
         TextField stelleField = new TextField("stelle", true);
         TextField gehaltField = new TextField("gehalt", true);
         Checkbox istEntlassen = new Checkbox("entlassene");
