@@ -30,7 +30,6 @@ import de.dblab.service.DataBaseService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import org.apache.click.extras.control.RegexField;
 //import org.springframework.stereotype.Component;
 
 //@Component
@@ -42,36 +41,24 @@ public final class AngestelltePage extends TemplatePage {
     public static int angId = 0;
     private final PageLink editLink = new PageLink("Edit", EditAngestellte.class);
     private ActionLink viewLink = new ActionLink("view", "View");
-    private final Form form = new Form("form");
-    private final RegexField searchField = new RegexField("Suche","Was?");
-    private final Select typeSelect = new Select("Typ","Wo?");
-    private final Select zeigenEntlassente = new Select("zeigenEntlassente","");
-    
-    private final Submit submit = new Submit("suchen");
-    
-    private final Form newForm = new Form("newform");
-    private final TextField fieldName = new TextField("fieldName","Name",true);
-    private final TextField fieldNachName = new TextField("fieldNachName","Nachname",true);
-    private final TextField fieldStelle = new TextField("fieldStelle","Stelle");
-    private final TextField fieldGehalt = new TextField("fieldGehalt","Gehalt");
-    private final Submit newSubmit = new Submit("new");
     private Column columnViewEdit;
-    private final Form optionsForm = new Form("optionsForm");
     private Column column;
-    private final Select sizeSelect = new Select("pageSize","Seitengröße");
-    
-    
+  
     private final AngestelterForm detailForm;
-
     public static final DataBaseService dataBaseService = new DataBaseService();
-
+    
+    private final SearchForm formSuchen;
 
     // Constructor ------------------------------------------------------------
 
     public AngestelltePage() {
         this.detailForm = new AngestelterForm();
-        initNewForm();
-        initForm();
+        
+        NewForm formNewAngestellter= new NewForm();
+        addControl(formNewAngestellter);
+        
+        formSuchen=new SearchForm ();
+        addControl(formSuchen);
         initTable();
     }
     
@@ -99,7 +86,7 @@ public final class AngestelltePage extends TemplatePage {
         
         
         table.setClass(Table.CLASS_ISI);
-        table.setPageSize(Integer.valueOf(sizeSelect.getValue()));
+        table.setPageSize(Integer.valueOf(formSuchen.sizeSelect.getValue()));
         table.setShowBanner(true);
         table.setBannerPosition(Table.POSITION_TOP);
         table.setSortable(true);
@@ -157,14 +144,14 @@ public final class AngestelltePage extends TemplatePage {
             
             @Override
             public List<Angestellte> getData() {
-                int type = Integer.valueOf(typeSelect.getValue());
-                Object value = searchField.getValue();
+                int type = Integer.valueOf(formSuchen.typeSelect.getValue());
+                Object value = formSuchen.searchField.getValue();
                 
                 if (type == Angestellte.ID.getId() || type == Angestellte.GEHALT.getId()) {
                     try{
                       Integer.parseInt(value.toString());
                     } catch (NumberFormatException e) {
-                        searchField.setValue("");
+                        formSuchen.searchField.setValue("");
                         type=1;
                         value = "%";
                     }
@@ -179,7 +166,7 @@ public final class AngestelltePage extends TemplatePage {
                              calendar.get(Calendar.DATE);
                      
                     } catch (ParseException ex) {
-                        searchField.setValue("");
+                        formSuchen.searchField.setValue("");
                         type=1;
                         value = "%";
                         // not an integer!
@@ -189,88 +176,25 @@ public final class AngestelltePage extends TemplatePage {
                     value = "%" + value + "%";
                 }
             
-                return dataBaseService.getAngestelltes(type, value, zeigenEntlassente.getValue());
+                return dataBaseService.getAngestelltes(type, value, formSuchen.firedSelect.getValue());
             }
         });
 
         table.restoreState(getContext());
     }
     
-    public void initForm(){
-        
-        FieldSet paymentFieldSet1 = new FieldSet("Suchen");
-        paymentFieldSet1.setStyle("background-color", "#f4f4f4");
-        addControl(form);
-        form.add(paymentFieldSet1);
-        
-        paymentFieldSet1.add(searchField);
-        searchField.setTabIndex(1);
-        searchField.setFocus(true);
-        paymentFieldSet1.add(typeSelect);
-        paymentFieldSet1.add(submit);
-        //searchField.setRequired(true);
-        
- 
-        //searchField.setPattern("[0-9]+\\.[0-9]+\\.[0-9]+");
-
-        paymentFieldSet1.add(zeigenEntlassente);
-        paymentFieldSet1.add(sizeSelect);
-        form.setColumns(3);
-        
-        zeigenEntlassente.addAll(Angestellte.stateAngestellteArray);
-        
-        typeSelect.addAll(Angestellte.getColumnAngestellte());
-        sizeSelect.addAll(new String[] {"5", "10", "15", "20", "25", "30", "35", "40", "45", "50"});
-        sizeSelect.setAttribute("onchange", "form.submit();");
-        typeSelect.setAttribute("onchange", "form.submit();");
-        zeigenEntlassente.setAttribute("onchange", "form.submit();");
-        //textField.setAttribute("onkeyup", "onAction");
-        searchField.setActionListener(new ActionListener(){
-
-            @Override
-            public boolean onAction(Control source) {
-                 table.onRender();
-                return true;
-            }
-      
-        });
-        submit.setAttribute("onclick", "form.submit();");
-        
-        form.restoreState(getContext());
-        addControl(optionsForm);
- 
-    }
-    
-    public void initNewForm(){
-        FieldSet paymentFieldSet = new FieldSet("Neuer Angestellter");
-        paymentFieldSet.setStyle("background-color", "#f4f4f4");
-        addControl(newForm);
-        newForm.add(paymentFieldSet);
-        
-        paymentFieldSet.add(fieldName);
-        paymentFieldSet.add(fieldNachName);
-        
-        paymentFieldSet.add(newSubmit);
-
-        
-        newForm.restoreState(getContext());
-
- 
-    }
-    
- 
     
     @Override
     public void onPost() {
         detailForm.copyFrom(dataBaseService.getAngestellteForID(angId));
-        form.saveState(getContext());
+        formSuchen.saveState(getContext());
         table.saveState(getContext());
     }
     
     @Override
     public void onRender() {
         
-        table.setPageSize(Integer.valueOf(sizeSelect.getValue()));
+        table.setPageSize(Integer.valueOf(formSuchen.sizeSelect.getValue()));
         
     }
     
