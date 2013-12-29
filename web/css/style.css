@@ -116,3 +116,7 @@ font-size: 9pt;
 div.content h2 {
   margin: 0;
 }
+
+td.fields {
+   vertical-align: top; 
+}

@@ -4,7 +4,6 @@ package de.dblab.page.angestellte;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.click.ActionListener;
 import org.apache.click.ActionResult;
 import org.apache.click.Control;
 import org.apache.click.ajax.DefaultAjaxBehavior;
@@ -12,11 +11,7 @@ import org.apache.click.control.AbstractLink;
 
 
 import org.apache.click.control.*;
-import org.apache.click.control.Form;
-import org.apache.click.control.PageLink;
-import org.apache.click.control.Select;
 import org.apache.click.control.Table;
-import org.apache.click.control.TextField;
 import org.apache.click.dataprovider.DataProvider;
 import org.apache.click.element.Element;
 import org.apache.click.element.JsImport;
@@ -24,7 +19,6 @@ import org.apache.click.element.JsScript;
 import org.apache.click.extras.control.FieldColumn;
 import org.apache.click.extras.control.LinkDecorator;
 import de.dblab.domain.Angestellte;
-import de.dblab.domain.Schaechte;
 import de.dblab.page.TemplatePage;
 import de.dblab.service.DataBaseService;
 import java.text.ParseException;
@@ -39,12 +33,11 @@ public final class AngestelltePage extends TemplatePage {
 
     private final Table table = new Table("table");
     public static int angId = 0;
-    private final PageLink editLink = new PageLink("Edit", EditAngestellte.class);
-    private ActionLink viewLink = new ActionLink("view", "View");
+    private final ActionLink viewLink = new ActionLink("view", "View");
     private Column columnViewEdit;
     private Column column;
   
-    private final AngestelterForm detailForm;
+    private final AngestelterForm detailForm  = new AngestelterForm();
     public static final DataBaseService dataBaseService = new DataBaseService();
     
     private final SearchForm formSuchen;
@@ -52,13 +45,13 @@ public final class AngestelltePage extends TemplatePage {
     // Constructor ------------------------------------------------------------
 
     public AngestelltePage() {
-        this.detailForm = new AngestelterForm();
         
         NewForm formNewAngestellter= new NewForm();
         addControl(formNewAngestellter);
         
         formSuchen=new SearchForm ();
         addControl(formSuchen);
+       // addControl(detailForm.getTableZeit());
         initTable();
     }
     
@@ -121,16 +114,13 @@ public final class AngestelltePage extends TemplatePage {
         //viewLink.setParameter("referrer", "/page/angestellte/AngestelltePage.htm");
         
             
-        editLink.setImageSrc("/images/table-edit.png");
-        editLink.setTitle("Edit Angestellte");
-        editLink.setParameter("referrer", "/AngestelltePage.htm");
         columnViewEdit = new Column("View/Edit");
         columnViewEdit.setTextAlign("center");
           // sizeSelect.setSize(8);
 
 
 
-        AbstractLink[] links = new AbstractLink[] { viewLink,editLink };
+        AbstractLink[] links = new AbstractLink[] { viewLink };
         columnViewEdit.setDecorator(new LinkDecorator(table, links, "id"));
         columnViewEdit.setSortable(false);
         columnViewEdit.setWidth("auto");

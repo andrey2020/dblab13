@@ -1,5 +1,32 @@
 jQuery(document).ready(function() {
     
+    jQuery("#Zeit td a").live('click', function(event){
+        var callServer = true;
+        var x=event.currentTarget;
+       // alert("The id of the triggered element: " + x);
+        
+        //if (x.name=="SchaechteZulassung") {
+            
+            editOrDeleteCustomer(event);
+        //}
+
+        if (callServer) {
+            // Make ajax request
+            
+        }
+
+        // Prevent the default browser behavior of navigating to the link
+        event.preventDefault();
+    })
+    
+    jQuery("#Zeit th a, .pagelinks a").live('click', function(event){
+        // Make ajax request
+        editOrDeleteCustomer(event);
+
+        // Prevent the default browser behavior of navigating to the link
+        return false;
+    });
+    
     jQuery("#tableSchaechteZulassung td a").live('click', function(event){
         var callServer = true;
         var x=event.currentTarget;
@@ -46,6 +73,8 @@ jQuery(document).ready(function() {
         if (x.name=="View") {
             
             editOrDeleteCustomer(event);
+             $('#content').animate({scrollTop:0}, 'slow');
+
         }
 
         if (callServer) {
@@ -64,7 +93,7 @@ jQuery(document).ready(function() {
         // Prevent the default browser behavior of navigating to the link
         return false;
     })
-})
+});
 
 function editOrDeleteCustomer(event) {
     var link = jQuery(event.currentTarget);

@@ -6,6 +6,7 @@ import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.SelectQuery;
 import de.dblab.domain.Angestellte;
 import de.dblab.domain.Schaechte;
+import de.dblab.domain.Zeit;
 import de.dblab.domain.Zulassung;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cayenne.exp.Expression;
@@ -84,5 +85,16 @@ public class DataBaseService {
         zulassung.setSchaechteId(schId);
         context.registerNewObject(zulassung);
         context.commitChanges();
+    }
+
+    public List<Zeit> getZeitFromAngestellte(int angId) {
+         Expression exp;
+        startDataBaseService();
+        exp = ExpressionFactory.likeExp(Zeit.TO_ANGESTELLTE.getName(),angId);
+        SelectQuery query = new SelectQuery(Zeit.class, exp);
+        
+      
+        return context.performQuery(query);
+        
     }
  }

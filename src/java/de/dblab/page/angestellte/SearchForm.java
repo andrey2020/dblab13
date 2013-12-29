@@ -36,7 +36,6 @@ public class SearchForm extends Form{
         paymentFieldSet.add(submit);
         paymentFieldSet.add(firedSelect);
         paymentFieldSet.add(sizeSelect);
-        
         this.setColumns(3);
         
         firedSelect.addAll(Angestellte.stateAngestellteArray);
