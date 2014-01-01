@@ -8,6 +8,7 @@ import de.dblab.domain.Angestellte;
 import de.dblab.domain.Schaechte;
 import de.dblab.domain.Zeit;
 import de.dblab.domain.Zulassung;
+import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.configuration.server.ServerRuntime;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -43,21 +44,23 @@ public class DataBaseService {
     
 
     public List<Angestellte> getAngestelltes(int type, Object value, String etlassente) {
-    
         startDataBaseService();
-        
         SelectQuery query = new SelectQuery(Angestellte.class, Angestellte.getExpressionAngestellte(type,value));
         query.andQualifier(Angestellte.getStateAngestellte().get(etlassente));
-      
         return context.performQuery(query);
-
     }
 
+    public List<Schaechte> getSchaechte(int type, Object value) {
+        startDataBaseService();
+        SelectQuery query = new SelectQuery(Schaechte.class, Schaechte.getExpressionSchaechte(type,value));
+        return context.performQuery(query);
+    }
 
     public Angestellte getAngestellteForID(Integer id) {
         startDataBaseService();
         return (Angestellte) context.performQuery(new SelectQuery(Angestellte.class, Angestellte.ID.eq(id))).get(0);
     }
+    
     public Schaechte getSchaechteForID(Integer id) {
         startDataBaseService();
         return (Schaechte) context.performQuery(new SelectQuery(Schaechte.class, Schaechte.ID.eq(id))).get(0);
@@ -71,12 +74,12 @@ public class DataBaseService {
         SelectQuery query = new SelectQuery(Schaechte.class,exp);
         return context.performQuery(query);
     }
-    
-     public void saveAngestellte(Angestellte angestellte) {
+
+     public void saveObject(CayenneDataObject Obj){
         startDataBaseService();
-        context.registerNewObject(angestellte);
+        context.registerNewObject(Obj);
         context.commitChanges();
-    }
+     }
 
     public void addZullassung(int angId, int schId) {
         startDataBaseService();

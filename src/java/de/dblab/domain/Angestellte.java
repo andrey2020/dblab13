@@ -15,8 +15,6 @@ public class Angestellte extends CayenneDataObject{
     private static HashMap<String, Expression> stateAngestellte;
     public static final String stateAngestellteArray[] = {"Alle","Entlassente","im Betrieb"};
     
-
-    
     public static HashMap<String, Expression> getStateAngestellte(){
         if (stateAngestellte == null){
             stateAngestellte = new HashMap<String, Expression>();

@@ -14,6 +14,7 @@ import de.dblab.service.DataBaseService;
 import java.util.ArrayList;
 import java.util.List;
 import net.sf.click.extras.control.CalendarField;
+import org.apache.click.ActionListener;
 import org.apache.click.ActionResult;
 import org.apache.click.Control;
 import org.apache.click.ajax.DefaultAjaxBehavior;
@@ -27,6 +28,7 @@ import org.apache.click.control.Form;
 import org.apache.click.control.Table;
 import org.apache.click.control.TextField;
 import org.apache.click.dataprovider.DataProvider;
+import org.apache.click.extras.control.DateField;
 import org.apache.click.extras.control.FieldColumn;
 import org.apache.click.extras.control.LinkDecorator;
 import org.apache.click.extras.control.TableInlinePaginator;
@@ -36,8 +38,7 @@ import org.apache.click.extras.control.TableInlinePaginator;
  * @author andrey
  */
 public final class AngestelterForm extends Form{
-    private final Button speichernButton = new Button("Speichern"); 
-    private final Button deleteButton = new Button("Entfernen"); 
+    private final Button closeButton = new Button("Schließen"); 
     private final FieldSet fieldSet = new FieldSet("Detail des Angestellter");
     private final Table tableSchaechteZulassung = new Table("tableSchaechteZulassung");
     private final Table tableVerboteneSchaechte = new Table("tableVerboteneSchaechte");
@@ -50,7 +51,7 @@ public final class AngestelterForm extends Form{
     private final Form downForm = new Form();
     private FieldColumn column;
 
-    CalendarField  geburtsDatumField = new CalendarField ("geburtsdatum", true);       
+          
     public AngestelterForm(){
        
        this.setJavaScriptValidation(true); 
@@ -71,7 +72,6 @@ public final class AngestelterForm extends Form{
        downForm.setColumns(2);
        fieldSet.add(topForm);
        fieldSet.add(downForm);
-       this.remove(speichernButton);
        
     }
   
@@ -86,6 +86,7 @@ public final class AngestelterForm extends Form{
     private void initFormComponent(){
 
         FieldSet subFieldSet = new FieldSet("Angestellter");
+        subFieldSet.setWidth("410px");
         componentform.setAttribute("background-color", "#f4f4f4");
         componentform.add(subFieldSet);
         subFieldSet.setStyle("background-color", "#f4f4f4");
@@ -96,15 +97,23 @@ public final class AngestelterForm extends Form{
         
         TextField idField = new TextField("id");
         idField.setDisabled(true);
-        TextField nameField = new TextField("name", true);
-        nameField.setWidth("250px");
-        TextField nachnameField = new TextField("nachname", true);
-        nachnameField.setWidth("250px");
+        TextField nameField = new TextField("name");
+    //    nameField.setWidth("250px");
+        nameField.setDisabled(true);
+        TextField nachnameField = new TextField("nachname");
+      //  nachnameField.setWidth("250px");
+        nachnameField.setDisabled(true);
         
-        TextField stelleField = new TextField("stelle", true);
-        TextField gehaltField = new TextField("gehalt", true);
+        TextField stelleField = new TextField("stelle");
+        stelleField.setDisabled(true);
+        TextField gehaltField = new TextField("gehalt");
+        gehaltField.setDisabled(true);
         Checkbox istEntlassen = new Checkbox("entlassene");
-        geburtsDatumField.setStyle("brown");
+        istEntlassen.setDisabled(true);
+        DateField  geburtsDatumField = new DateField ("geburtsdatum"); 
+        geburtsDatumField.setDisabled(true);
+        geburtsDatumField.setFormatPattern("dd.MM.yyyy");
+        
         subFieldSet.add(idField);
         subFieldSet.add(nameField);
         subFieldSet.add(nachnameField);
@@ -112,9 +121,9 @@ public final class AngestelterForm extends Form{
         subFieldSet.add(stelleField);
         subFieldSet.add(gehaltField);
         subFieldSet.add(istEntlassen);
-        subFieldSet.add(speichernButton);
-        subFieldSet.add(deleteButton);
-        deleteButton.setParent(componentform);
+        this.add(closeButton);
+        closeButton.setOnClick("form.submit();");
+        
         componentform.setColumns(1);
         
     }
@@ -249,7 +258,7 @@ public final class AngestelterForm extends Form{
        downForm.add(tableSchaechteZulassung); 
        //subFieldSet.setStyle("background-color", "#f4f4f4");
        tableSchaechteZulassung.setClass(Table.CLASS_REPORT);
-       tableSchaechteZulassung.setWidth("410px");
+       tableSchaechteZulassung.setWidth("440px");
        removeFromAngestellterZulassungLink.setParent(this);
        removeFromAngestellterZulassungLink.addBehavior(new DefaultAjaxBehavior() {
             @Override

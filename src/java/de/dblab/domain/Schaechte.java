@@ -2,21 +2,47 @@ package de.dblab.domain;
 
 import java.util.List;
 import org.apache.cayenne.CayenneDataObject;
-import org.apache.cayenne.exp.Property;
+import de.dblab.service.cayenne.Property;
+import java.util.HashMap;
+import org.apache.cayenne.exp.Expression;
 
 public class Schaechte extends CayenneDataObject {
 
+    
+        private static HashMap<Integer, String> columnSchaechte;
+    
+    public static HashMap<Integer, String> getColumnSchaechte(){
+        if (columnSchaechte == null){
+            columnSchaechte = new HashMap<Integer, String>(); 
+            for(int i = 0; i<visiblyColumnSchaechte.length;i++){
+                columnSchaechte.put(i, visiblyColumnSchaechte[i].getTitleName());
+            }
+        }
+        return columnSchaechte;
+    }
+    
+    public static Expression getExpressionSchaechte(int type, Object value){
+        return visiblyColumnSchaechte[type].likeIgnoreCaseExp(value);
+    }
+    
+    
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Boolean> GESCHLOSSEN = new Property<Boolean>("geschlossen");
-    public static final Property<Integer> ID = new Property<Integer>("id");
+    public static final Property<Boolean> GESCHLOSSEN = new Property<Boolean>("geschlossen","Inaktiv",3);
+    public static final Property<Integer> ID = new Property<Integer>("id","ID",4);
     public static final Property<Integer> LEITER_ID = new Property<Integer>("leiter_id");
-    public static final Property<String> NAME = new Property<String>("name");
-    public static final Property<Integer> TIEF = new Property<Integer>("tief");
+    public static final Property<String> NAME = new Property<String>("name","Name",1);
+    public static final Property<Integer> TIEF = new Property<Integer>("tief","Tief",2);
     public static final Property<List<Angestellte>> ANGESTELLTEZULASSUNG = new Property<List<Angestellte>>("angestellteZulassung");
     public static final Property<Angestellte> LEITERVONSCHAECHTE = new Property<Angestellte>("leiterVonSchaechte");
     public static final Property<List<Zeit>> ZEIT_ARRAY = new Property<List<Zeit>>("zeitArray");
 
+    public static final Property[] visiblyColumnSchaechte = {Schaechte.NAME,
+                                                           Schaechte.TIEF,
+                                                           Schaechte.GESCHLOSSEN,
+            
+                                                           Schaechte.ID};
+    
     public void setGeschlossen(Boolean geschlossen) {
         writeProperty(GESCHLOSSEN.getName(), geschlossen);
     }

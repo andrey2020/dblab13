@@ -34,6 +34,7 @@ public final class AngestelltePage extends TemplatePage {
     private final Table table = new Table("table");
     public static int angId = 0;
     private final ActionLink viewLink = new ActionLink("view", "View");
+     PageLink editLink = new PageLink("Edit", EditAngestellte.class);
     private Column columnViewEdit;
     private Column column;
   
@@ -58,7 +59,8 @@ public final class AngestelltePage extends TemplatePage {
     public void initTable(){
         addControl(table);
         addControl(viewLink);
-       
+        addControl(editLink);
+        
         table.getControlLink().addBehavior(new DefaultAjaxBehavior() {
             @Override
             public ActionResult onAction(Control source) {
@@ -75,8 +77,6 @@ public final class AngestelltePage extends TemplatePage {
                 return new ActionResult(detailForm.toString(), ActionResult.HTML);
             }
         });
-        
-        
         
         table.setClass(Table.CLASS_ISI);
         table.setPageSize(Integer.valueOf(formSuchen.sizeSelect.getValue()));
@@ -111,16 +111,15 @@ public final class AngestelltePage extends TemplatePage {
         viewLink.setAttribute("name", "View");
         viewLink.setImageSrc("/images/form.png");
         viewLink.setTitle("View");
-        //viewLink.setParameter("referrer", "/page/angestellte/AngestelltePage.htm");
-        
-            
+        editLink.setAttribute("name", "Edit");
+        editLink.setImageSrc("/images/table-edit.png");
+        editLink.setTitle("Edit Angestellte");
+        editLink.setParameter("referrer", "/page/angestellte/AngestelltePage.htm");
+
         columnViewEdit = new Column("View/Edit");
         columnViewEdit.setTextAlign("center");
           // sizeSelect.setSize(8);
-
-
-
-        AbstractLink[] links = new AbstractLink[] { viewLink };
+        AbstractLink[] links = new AbstractLink[] { viewLink, editLink};
         columnViewEdit.setDecorator(new LinkDecorator(table, links, "id"));
         columnViewEdit.setSortable(false);
         columnViewEdit.setWidth("auto");
@@ -173,7 +172,6 @@ public final class AngestelltePage extends TemplatePage {
         table.restoreState(getContext());
     }
     
-    
     @Override
     public void onPost() {
         detailForm.copyFrom(dataBaseService.getAngestellteForID(angId));
@@ -183,7 +181,6 @@ public final class AngestelltePage extends TemplatePage {
     
     @Override
     public void onRender() {
-        
         table.setPageSize(Integer.valueOf(formSuchen.sizeSelect.getValue()));
         
     }
