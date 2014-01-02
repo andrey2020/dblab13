@@ -19,6 +19,7 @@ public class SearchForm  extends Form{
   public final TextField searchField = new TextField("Suche","Was?");    
     public final Select sizeSelect = new Select("pageSize","Seitengröße");
     public final Select typeSelect = new Select("Typ","Wo?");
+    public final Select inaktivSelect = new Select("zeigenInaktiv","");
 
     public SearchForm(){
         super("form");
@@ -32,14 +33,17 @@ public class SearchForm  extends Form{
         searchField.setTabIndex(1);
         searchField.setFocus(true);
         paymentFieldSet.add(typeSelect);
+        paymentFieldSet.add(inaktivSelect);
         paymentFieldSet.add(submit);
         paymentFieldSet.add(sizeSelect);
-        this.setColumns(2);
+        this.setColumns(3);
         
+        inaktivSelect.addAll(Schaechte.stateSchaechteArray);
         typeSelect.addAll(Schaechte.getColumnSchaechte());
         sizeSelect.addAll(new String[] {"5", "10", "15", "20", "50", "100"});
         sizeSelect.setAttribute("onchange", "form.submit();");
         typeSelect.setAttribute("onchange", "form.submit();");
+        inaktivSelect.setAttribute("onchange", "form.submit();");
         //searchField.setActionListener(this);
         submit.setAttribute("onclick", "form.submit();");
         

@@ -8,13 +8,10 @@ package de.dblab.page.angestellte;
 
 import de.dblab.domain.Schaechte;
 import de.dblab.domain.Zeit;
-import de.dblab.page.angestellte.AngestelltePage;
+import de.dblab.page.HomePage;
+import de.dblab.page.DataBaseService;
 import static de.dblab.page.angestellte.AngestelltePage.angId;
-import de.dblab.service.DataBaseService;
-import java.util.ArrayList;
 import java.util.List;
-import net.sf.click.extras.control.CalendarField;
-import org.apache.click.ActionListener;
 import org.apache.click.ActionResult;
 import org.apache.click.Control;
 import org.apache.click.ajax.DefaultAjaxBehavior;
@@ -38,15 +35,19 @@ import org.apache.click.extras.control.TableInlinePaginator;
  * @author andrey
  */
 public final class AngestelterForm extends Form{
-    private final Button closeButton = new Button("Schließen"); 
-    private final FieldSet fieldSet = new FieldSet("Detail des Angestellter");
-    private final Table tableSchaechteZulassung = new Table("tableSchaechteZulassung");
-    private final Table tableVerboteneSchaechte = new Table("tableVerboteneSchaechte");
-    private final Table tableZeit = new Table("Zeit");
-    private final Form componentform = new Form();
+
+    private final Table tableZeit = new Table("nebenTable1");
+    private final Table tableSchaechteZulassung = new Table("nebenTable2");
+    private final Table tableVerboteneSchaechte = new Table("nebenTable3");
+    
     private final ActionLink removeFromAngestellterZulassungLink = new ActionLink("remove", "Remove");
     private final ActionLink addToAngestellterZulassungLink = new ActionLink("add", "Add");
-    private final DataBaseService dataBaseService = AngestelltePage.dataBaseService;// new DataBaseService();
+    
+    private final Button closeButton = new Button("Schließen"); 
+    private final FieldSet fieldSet = new FieldSet("Detail des Angestellter");
+    private final Form componentform = new Form();
+
+    private final DataBaseService dataBaseService = HomePage.dataBaseService;// new DataBaseService();
     private final Form topForm = new Form();
     private final Form downForm = new Form();
     private FieldColumn column;
@@ -132,10 +133,7 @@ public final class AngestelterForm extends Form{
         tableZeit.getControlLink().addBehavior(new DefaultAjaxBehavior() {
             @Override
             public ActionResult onAction(Control source) {
-               // tableZeit.saveState(getContext());
-               // tableZeit.onProcess();
-               // Form thisForm = (Form) source.getParent();
-               // thisForm.copyFrom(dataBaseService.getAngestellteForID(angId));
+
                 tableZeit.onProcess();
                 getForm().copyFrom(dataBaseService.getAngestellteForID(angId));
                 return new ActionResult(getForm().toString(), ActionResult.HTML);
@@ -164,7 +162,7 @@ public final class AngestelterForm extends Form{
         tableZeit.setSortedColumn("zeitEingang");
         tableZeit.setSortedColumn("zeitAusgang");
         tableZeit.setShowBanner(true);
-        tableZeit.setPageSize(4);
+        tableZeit.setPageSize(7);
 
         tableZeit.setWidth("555px");
         
@@ -186,8 +184,10 @@ public final class AngestelterForm extends Form{
         tableVerboteneSchaechte.getControlLink().addBehavior(new DefaultAjaxBehavior() {
             @Override
             public ActionResult onAction(Control source) {
-
-                return new ActionResult(source.getParent().toString(), ActionResult.HTML);
+                tableVerboteneSchaechte.onProcess();
+                getForm().copyFrom(dataBaseService.getAngestellteForID(angId));
+                return new ActionResult(getForm().toString(), ActionResult.HTML);
+                
         }}); 
            
        
@@ -202,9 +202,9 @@ public final class AngestelterForm extends Form{
             public ActionResult onAction(Control source) {
                 int id=addToAngestellterZulassungLink.getValueInteger();
                 //dataBaseService.addZullassung(AngestelltePage.angId,id);
-                 dataBaseService.getAngestellteForID(AngestelltePage.angId).addToSchaechteZulassung(
-                                dataBaseService.getSchaechteForID(id));
-                Form thisForm = (Form) source.getParent();
+                 dataBaseService.getAngestellteForID(AngestelltePage.angId).addToSchaechteZulassung(dataBaseService.getSchaechteForID(id));
+                dataBaseService.commitChange();
+                 Form thisForm = (Form) source.getParent();
                 thisForm.copyFrom(dataBaseService.getAngestellteForID(angId));
                 return new ActionResult(getForm().toString(), ActionResult.HTML);
             }
@@ -232,8 +232,8 @@ public final class AngestelterForm extends Form{
         columnRemove.setWidth("auto");
         tableVerboteneSchaechte.addColumn(columnRemove);
         
-        addToAngestellterZulassungLink.setAttribute("name", "SchaechteZulassung");
-        tableVerboteneSchaechte.setName("tableSchaechteZulassung");
+        addToAngestellterZulassungLink.setAttribute("name", "linkAction");
+
        
         tableVerboteneSchaechte.addColumn(new Column("id","Id"));
         Column nameColumn = new Column("name","Name");
@@ -275,8 +275,9 @@ public final class AngestelterForm extends Form{
        tableSchaechteZulassung.getControlLink().addBehavior(new DefaultAjaxBehavior() {
             @Override
             public ActionResult onAction(Control source) {
-
-                return new ActionResult(source.getParent().toString(), ActionResult.HTML);
+                tableSchaechteZulassung.onProcess();
+                getForm().copyFrom(dataBaseService.getAngestellteForID(angId));
+                return new ActionResult(getForm().toString(), ActionResult.HTML);
         }});
          
        
@@ -286,9 +287,8 @@ public final class AngestelterForm extends Form{
                 return dataBaseService.getAngestellteForID(AngestelltePage.angId).getSchaechteZulassung();
             }
         });
-       
-        removeFromAngestellterZulassungLink.setAttribute("name", "SchaechteZulassung");
-        tableSchaechteZulassung.setName("tableSchaechteZulassung");
+
+
         tableSchaechteZulassung.addColumn(new Column("id","Id"));
         tableSchaechteZulassung.addColumn(new Column("name","Name"));
         tableSchaechteZulassung.addColumn(new Column("tief","Tief"));
@@ -299,11 +299,12 @@ public final class AngestelterForm extends Form{
         column.setWidth("50px");
         tableSchaechteZulassung.addColumn(column);
         
-        tableSchaechteZulassung.setSortable(false);
+        tableSchaechteZulassung.setSortable(true);
         
         removeFromAngestellterZulassungLink.setImageSrc("/images/delete.png");
         removeFromAngestellterZulassungLink.setTitle("Remove Schacht Zulassung");
-        // removeFromAngestellterZulassungLink.setAttribute("onclick", "return window.confirm('Are you sure you want to delete this record?');");        
+        removeFromAngestellterZulassungLink.setAttribute("name", "linkAction");
+               
         AbstractLink[] links = new AbstractLink[] { removeFromAngestellterZulassungLink };
         Column columnRemove=new Column("Action");
         columnRemove.setDecorator(new LinkDecorator(tableSchaechteZulassung, links, "id"));
@@ -317,7 +318,4 @@ public final class AngestelterForm extends Form{
     public Table getTableZeit(){
         return tableZeit;
     }
-    
-
-    
 }

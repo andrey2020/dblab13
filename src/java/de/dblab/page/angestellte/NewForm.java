@@ -5,7 +5,7 @@
 package de.dblab.page.angestellte;
 
 import de.dblab.domain.Angestellte;
-import de.dblab.service.DataBaseService;
+import de.dblab.page.DataBaseService;
 import java.util.Date;
 import org.apache.click.ActionListener;
 import org.apache.click.Control;

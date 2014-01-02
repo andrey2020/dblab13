@@ -1,7 +1,7 @@
 package de.dblab.page.schaechte;
 
 import de.dblab.domain.Schaechte;
-import de.dblab.service.DataBaseService;
+import de.dblab.page.DataBaseService;
 import org.apache.click.ActionListener;
 import org.apache.click.Control;
 import org.apache.click.control.FieldSet;

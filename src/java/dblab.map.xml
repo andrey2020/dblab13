@@ -4,32 +4,33 @@
 	 xsi:schemaLocation="http://cayenne.apache.org/schema/3.0/modelMap http://cayenne.apache.org/schema/3.0/modelMap.xsd"
 	 project-version="6">
 	<property name="defaultPackage" value="de.dblab.domain"/>
-	<db-entity name="Angestellte" catalog="Bergwerk">
+	<property name="defaultSchema" value="DBLAB13"/>
+	<db-entity name="Angestellte" schema="DBLAB13">
 		<db-attribute name="entlassene" type="BIT" isMandatory="true"/>
-		<db-attribute name="geburtsdatum" type="DATE" length="10"/>
+		<db-attribute name="geburtsdatum" type="DATE" isMandatory="true" length="10"/>
 		<db-attribute name="gehalt" type="INTEGER" length="10"/>
 		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
 		<db-attribute name="nachname" type="VARCHAR" length="45"/>
 		<db-attribute name="name" type="VARCHAR" length="45"/>
 		<db-attribute name="stelle" type="VARCHAR" length="45"/>
 	</db-entity>
-	<db-entity name="Angestellte_Zulassung_Schaechte" catalog="Bergwerk">
-		<db-attribute name="Angestellte_id" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
-		<db-attribute name="Schaechte_id" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
-	</db-entity>
-	<db-entity name="Schaechte" catalog="Bergwerk">
+	<db-entity name="Schaechte" schema="DBLAB13">
 		<db-attribute name="geschlossen" type="BIT" isMandatory="true"/>
 		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
 		<db-attribute name="leiter_id" type="INTEGER" length="10"/>
 		<db-attribute name="name" type="VARCHAR" length="45"/>
-		<db-attribute name="tief" type="INTEGER" length="10"/>
+		<db-attribute name="tief" type="INTEGER" isMandatory="true" length="10"/>
 	</db-entity>
-	<db-entity name="Zeit" catalog="Bergwerk">
+	<db-entity name="Zeit" schema="DBLAB13">
 		<db-attribute name="Angestellter_id" type="INTEGER" isMandatory="true" length="10"/>
 		<db-attribute name="Schaechte_id" type="INTEGER" isMandatory="true" length="10"/>
 		<db-attribute name="Zeit_Ausgang" type="TIMESTAMP" length="19"/>
 		<db-attribute name="Zeit_Eingang" type="TIMESTAMP" isMandatory="true" length="19"/>
 		<db-attribute name="id" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
+	</db-entity>
+	<db-entity name="Zulassung" schema="DBLAB13">
+		<db-attribute name="Angestellte_id" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
+		<db-attribute name="Schaechte_id" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
 	</db-entity>
 	<obj-entity name="Angestellte" className="de.dblab.domain.Angestellte" dbEntityName="Angestellte">
 		<obj-attribute name="entlassene" type="java.lang.Boolean" db-attribute-path="entlassene"/>
@@ -51,33 +52,16 @@
 		<obj-attribute name="zeitAusgang" type="java.util.Date" db-attribute-path="Zeit_Ausgang"/>
 		<obj-attribute name="zeitEingang" type="java.util.Date" db-attribute-path="Zeit_Eingang"/>
 	</obj-entity>
-        <obj-entity name="Zulassung" className="de.dblab.domain.Zulassung" dbEntityName="Angestellte_Zulassung_Schaechte">
-		<obj-attribute name="angestellteId" type="java.lang.Integer" db-attribute-path="Angestellte_id"/>
-		<obj-attribute name="schaechteId" type="java.lang.Integer" db-attribute-path="Schaechte_id"/>
-	</obj-entity>
-
-        
-        
-        
-	<db-relationship name="angestellteZulassungSchaechteArray" source="Angestellte" target="Angestellte_Zulassung_Schaechte" toDependentPK="true" toMany="true">
+	<db-relationship name="angestellteZulassungSchaechteArray" source="Angestellte" target="Zulassung" toDependentPK="true" toMany="true">
 		<db-attribute-pair source="id" target="Angestellte_id"/>
 	</db-relationship>
-        
 	<db-relationship name="schaechteArray" source="Angestellte" target="Schaechte" toMany="true">
 		<db-attribute-pair source="id" target="leiter_id"/>
 	</db-relationship>
-        
 	<db-relationship name="zeitArray" source="Angestellte" target="Zeit" toMany="true">
 		<db-attribute-pair source="id" target="Angestellter_id"/>
 	</db-relationship>
-        
-	<db-relationship name="toAngestellte" source="Angestellte_Zulassung_Schaechte" target="Angestellte" toMany="false">
-		<db-attribute-pair source="Angestellte_id" target="id"/>
-	</db-relationship>
-	<db-relationship name="toSchaechte" source="Angestellte_Zulassung_Schaechte" target="Schaechte" toMany="false">
-		<db-attribute-pair source="Schaechte_id" target="id"/>
-	</db-relationship>
-	<db-relationship name="angestellteZulassungSchaechteArray" source="Schaechte" target="Angestellte_Zulassung_Schaechte" toDependentPK="true" toMany="true">
+	<db-relationship name="angestellteZulassungSchaechteArray" source="Schaechte" target="Zulassung" toDependentPK="true" toMany="true">
 		<db-attribute-pair source="id" target="Schaechte_id"/>
 	</db-relationship>
 	<db-relationship name="toAngestellte" source="Schaechte" target="Angestellte" toMany="false">
@@ -92,12 +76,18 @@
 	<db-relationship name="toSchaechte" source="Zeit" target="Schaechte" toMany="false">
 		<db-attribute-pair source="Schaechte_id" target="id"/>
 	</db-relationship>
-	<obj-relationship name="leiterVonSchaechte" source="Angestellte" target="Schaechte" deleteRule="Deny" db-relationship-path="schaechteArray"/>
-	<obj-relationship name="schaechteZulassung" source="Angestellte" target="Schaechte" deleteRule="Deny" db-relationship-path="angestellteZulassungSchaechteArray.toSchaechte"/>
-	<obj-relationship name="zeitArray" source="Angestellte" target="Zeit" deleteRule="Deny" db-relationship-path="zeitArray"/>
-	<obj-relationship name="angestellteZulassung" source="Schaechte" target="Angestellte" deleteRule="Deny" db-relationship-path="angestellteZulassungSchaechteArray.toAngestellte"/>
+	<db-relationship name="toAngestellte" source="Zulassung" target="Angestellte" toMany="false">
+		<db-attribute-pair source="Angestellte_id" target="id"/>
+	</db-relationship>
+	<db-relationship name="toSchaechte" source="Zulassung" target="Schaechte" toMany="false">
+		<db-attribute-pair source="Schaechte_id" target="id"/>
+	</db-relationship>
+	<obj-relationship name="leiterVonSchaechte" source="Angestellte" target="Schaechte" db-relationship-path="schaechteArray"/>
+	<obj-relationship name="schaechteZulassung" source="Angestellte" target="Schaechte" deleteRule="Nullify" db-relationship-path="angestellteZulassungSchaechteArray.toSchaechte"/>
+	<obj-relationship name="zeitArray" source="Angestellte" target="Zeit" deleteRule="Cascade" db-relationship-path="zeitArray"/>
+	<obj-relationship name="angestellteZulassung" source="Schaechte" target="Angestellte" deleteRule="Cascade" db-relationship-path="angestellteZulassungSchaechteArray.toAngestellte"/>
 	<obj-relationship name="leiterVonSchaechte" source="Schaechte" target="Angestellte" deleteRule="Nullify" db-relationship-path="toAngestellte"/>
-	<obj-relationship name="zeitArray" source="Schaechte" target="Zeit" deleteRule="Deny" db-relationship-path="zeitArray"/>
-	<obj-relationship name="toAngestellte" source="Zeit" target="Angestellte" deleteRule="Nullify" db-relationship-path="toAngestellte"/>
-	<obj-relationship name="toSchaechte" source="Zeit" target="Schaechte" deleteRule="Nullify" db-relationship-path="toSchaechte"/>
+	<obj-relationship name="zeitArray" source="Schaechte" target="Zeit" deleteRule="Cascade" db-relationship-path="zeitArray"/>
+	<obj-relationship name="toAngestellte" source="Zeit" target="Angestellte" db-relationship-path="toAngestellte"/>
+	<obj-relationship name="toSchaechte" source="Zeit" target="Schaechte" db-relationship-path="toSchaechte"/>
 </data-map>

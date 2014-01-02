@@ -9,8 +9,19 @@ import org.apache.cayenne.exp.Expression;
 public class Schaechte extends CayenneDataObject {
 
     
-        private static HashMap<Integer, String> columnSchaechte;
+    private static HashMap<Integer, String> columnSchaechte;
+    private static HashMap<String, Expression> stateSchaechte;
+    public static final String stateSchaechteArray[] = {"Alle","Aktiv","Inaktiv"};
     
+    public static HashMap<String, Expression> getStateSchaechte(){
+        if (stateSchaechte == null){
+            stateSchaechte = new HashMap<String, Expression>();
+            stateSchaechte.put(stateSchaechteArray[0], Schaechte.GESCHLOSSEN.isNotNull());
+            stateSchaechte.put(stateSchaechteArray[1], Schaechte.GESCHLOSSEN.isFalse());
+            stateSchaechte.put(stateSchaechteArray[2], Schaechte.GESCHLOSSEN.isTrue());
+        }
+        return stateSchaechte;
+    }
     public static HashMap<Integer, String> getColumnSchaechte(){
         if (columnSchaechte == null){
             columnSchaechte = new HashMap<Integer, String>(); 
@@ -28,19 +39,17 @@ public class Schaechte extends CayenneDataObject {
     
     public static final String ID_PK_COLUMN = "id";
 
-    public static final Property<Boolean> GESCHLOSSEN = new Property<Boolean>("geschlossen","Inaktiv",3);
-    public static final Property<Integer> ID = new Property<Integer>("id","ID",4);
+    public static final Property<Boolean> GESCHLOSSEN = new Property<Boolean>("geschlossen");
+    public static final Property<Integer> ID = new Property<Integer>("id","ID",2);
     public static final Property<Integer> LEITER_ID = new Property<Integer>("leiter_id");
-    public static final Property<String> NAME = new Property<String>("name","Name",1);
-    public static final Property<Integer> TIEF = new Property<Integer>("tief","Tief",2);
+    public static final Property<String> NAME = new Property<String>("name","Name",0);
+    public static final Property<Integer> TIEF = new Property<Integer>("tief","Tief",1);
     public static final Property<List<Angestellte>> ANGESTELLTEZULASSUNG = new Property<List<Angestellte>>("angestellteZulassung");
     public static final Property<Angestellte> LEITERVONSCHAECHTE = new Property<Angestellte>("leiterVonSchaechte");
     public static final Property<List<Zeit>> ZEIT_ARRAY = new Property<List<Zeit>>("zeitArray");
 
     public static final Property[] visiblyColumnSchaechte = {Schaechte.NAME,
                                                            Schaechte.TIEF,
-                                                           Schaechte.GESCHLOSSEN,
-            
                                                            Schaechte.ID};
     
     public void setGeschlossen(Boolean geschlossen) {
@@ -78,23 +87,23 @@ public class Schaechte extends CayenneDataObject {
         return (Integer)readProperty(TIEF.getName());
     }
 
-    public void addToAngestellteArray(Angestellte obj) {
+    public void addToAngestellteZulassung(Angestellte obj) {
         addToManyTarget(ANGESTELLTEZULASSUNG.getName(), obj, true);
     }
-    public void removeFromAngestellteArray(Angestellte obj) {
+    public void removeFromAngestellteZulassung(Angestellte obj) {
         removeToManyTarget(ANGESTELLTEZULASSUNG.getName(), obj, true);
     }
     @SuppressWarnings("unchecked")
-    public List<Angestellte> getAngestellteArray() {
+    public List<Angestellte> getAngestellteZulassung() {
         return (List<Angestellte>)readProperty(ANGESTELLTEZULASSUNG.getName());
     }
 
 
-    public void setToAngestellte(Angestellte toAngestellte) {
+    public void setLeiterVonSchaechte(Angestellte toAngestellte) {
         setToOneTarget(LEITERVONSCHAECHTE.getName(), toAngestellte, true);
     }
 
-    public Angestellte getToAngestellte() {
+    public Angestellte getLeiterVonSchaechte() {
         return (Angestellte)readProperty(LEITERVONSCHAECHTE.getName());
     }
 

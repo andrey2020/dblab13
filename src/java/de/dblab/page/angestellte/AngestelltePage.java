@@ -19,11 +19,15 @@ import org.apache.click.element.JsScript;
 import org.apache.click.extras.control.FieldColumn;
 import org.apache.click.extras.control.LinkDecorator;
 import de.dblab.domain.Angestellte;
+import de.dblab.page.HomePage;
+import de.dblab.page.DataBaseService;
 import de.dblab.page.TemplatePage;
-import de.dblab.service.DataBaseService;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import net.sf.click.extras.control.CalendarField;
 //import org.springframework.stereotype.Component;
 
 //@Component
@@ -32,21 +36,27 @@ public final class AngestelltePage extends TemplatePage {
     private static final long serialVersionUID = 1L;
 
     private final Table table = new Table("table");
-    public static int angId = 0;
+    public static int angId = -1;
+    private final ActionLink deleteLink = new ActionLink("delete", "Delete");
     private final ActionLink viewLink = new ActionLink("view", "View");
-     PageLink editLink = new PageLink("Edit", EditAngestellte.class);
+    private final PageLink editLink = new PageLink("Edit", EditAngestellte.class);
+    
     private Column columnViewEdit;
     private Column column;
   
     private final AngestelterForm detailForm  = new AngestelterForm();
-    public static final DataBaseService dataBaseService = new DataBaseService();
+    private final DataBaseService dataBaseService = HomePage.dataBaseService;
     
     private final SearchForm formSuchen;
 
     // Constructor ------------------------------------------------------------
 
     public AngestelltePage() {
-        
+     /*   typeSearchList.add(new TextField());
+        typeSearchList.add(new TextField());
+        typeSearchList.add(new TextField());
+        typeSearchList.add(new CalendarField());
+        typeSearchList.add(new TextField());*/
         NewForm formNewAngestellter= new NewForm();
         addControl(formNewAngestellter);
         
@@ -57,9 +67,20 @@ public final class AngestelltePage extends TemplatePage {
     }
     
     public void initTable(){
+        addControl(deleteLink);
         addControl(table);
         addControl(viewLink);
         addControl(editLink);
+        
+       deleteLink.addBehavior(new DefaultAjaxBehavior() {
+            @Override
+            public ActionResult onAction(Control source) {
+                angId = deleteLink.getValueInteger();
+                dataBaseService.removeAngestellte(angId);
+                table.onProcess();
+                return new ActionResult(table.toString(), ActionResult.HTML);
+            }
+        });
         
         table.getControlLink().addBehavior(new DefaultAjaxBehavior() {
             @Override
@@ -77,7 +98,7 @@ public final class AngestelltePage extends TemplatePage {
                 return new ActionResult(detailForm.toString(), ActionResult.HTML);
             }
         });
-        
+
         table.setClass(Table.CLASS_ISI);
         table.setPageSize(Integer.valueOf(formSuchen.sizeSelect.getValue()));
         table.setShowBanner(true);
@@ -108,24 +129,30 @@ public final class AngestelltePage extends TemplatePage {
         column.setWidth("50px");
         table.addColumn(column);
         
+        deleteLink.setAttribute("name", "Delete");
+        deleteLink.setImageSrc("/images/remove.png");
+        deleteLink.setTitle("Delete");
+        
         viewLink.setAttribute("name", "View");
         viewLink.setImageSrc("/images/form.png");
         viewLink.setTitle("View");
+        
         editLink.setAttribute("name", "Edit");
         editLink.setImageSrc("/images/table-edit.png");
-        editLink.setTitle("Edit Angestellte");
+        editLink.setTitle("Edit");
         editLink.setParameter("referrer", "/page/angestellte/AngestelltePage.htm");
 
+        
         columnViewEdit = new Column("View/Edit");
         columnViewEdit.setTextAlign("center");
           // sizeSelect.setSize(8);
-        AbstractLink[] links = new AbstractLink[] { viewLink, editLink};
+        AbstractLink[] links = new AbstractLink[] { viewLink, editLink, deleteLink };
         columnViewEdit.setDecorator(new LinkDecorator(table, links, "id"));
         columnViewEdit.setSortable(false);
         columnViewEdit.setWidth("auto");
         table.addColumn(columnViewEdit);
         
-
+       
         
         table.setDataProvider(new DataProvider<Angestellte>() {
             
@@ -146,35 +173,27 @@ public final class AngestelltePage extends TemplatePage {
                     }
                 }else if (type == Angestellte.GEBURTSDATUM.getId()) {
                     try{
-                     SimpleDateFormat dateJava = new SimpleDateFormat("dd.MM.yyyy");
-                     Calendar calendar = Calendar.getInstance(); 
-                     calendar.setTime(dateJava.parse(value.toString()));
-                        
-                     value = calendar.get(Calendar.YEAR) + "-" + 
-                             (calendar.get(Calendar.MONTH)+1) + "-" + 
-                             calendar.get(Calendar.DATE);
-                     
+                        SimpleDateFormat dateJava = new SimpleDateFormat("dd.MM.yyyy");
+                        Calendar calendar = Calendar.getInstance(); 
+                        calendar.setTime(dateJava.parse(value.toString()));
+                        value = calendar;
                     } catch (ParseException ex) {
                         formSuchen.searchField.setValue("");
                         type=1;
                         value = "%";
-                        // not an integer!
                     } 
-
                 }else{
                     value = "%" + value + "%";
                 }
-            
                 return dataBaseService.getAngestelltes(type, value, formSuchen.firedSelect.getValue());
             }
         });
-
         table.restoreState(getContext());
     }
     
     @Override
     public void onPost() {
-        detailForm.copyFrom(dataBaseService.getAngestellteForID(angId));
+
         formSuchen.saveState(getContext());
         table.saveState(getContext());
     }

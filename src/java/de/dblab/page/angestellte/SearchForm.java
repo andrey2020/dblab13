@@ -5,6 +5,8 @@
 package de.dblab.page.angestellte;
 
 import de.dblab.domain.Angestellte;
+import net.sf.click.extras.control.CalendarField;
+import org.apache.click.control.Field;
 import org.apache.click.control.FieldSet;
 import org.apache.click.control.Form;
 import org.apache.click.control.Select;
@@ -16,13 +18,15 @@ import org.apache.click.control.TextField;
  * @author anuta
  */
 public class SearchForm extends Form{
-    public final TextField searchField = new TextField("Suche","Was?");    
+    public  TextField searchField;   
     public final Select sizeSelect = new Select("pageSize","Seitengröße");
     public final Select typeSelect = new Select("Typ","Wo?");
     public final Select firedSelect = new Select("zeigenEntlassente","");
 
     public SearchForm(){
         super("form");
+        
+        searchField= new TextField("Suche","Was?") ; 
         Submit submit = new Submit("suchen");
     
         FieldSet paymentFieldSet = new FieldSet("Suchen");
