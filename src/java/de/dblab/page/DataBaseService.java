@@ -10,6 +10,7 @@ import de.dblab.domain.Zeit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.apache.cayenne.BaseContext;
 import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.configuration.server.ServerRuntime;
@@ -25,12 +26,13 @@ import org.apache.cayenne.query.SelectQuery;
 public class DataBaseService {
     //ObjectContext context; 
     ObjectContext context;
-    ServerRuntime runtime;
+    //ServerRuntime runtime;
     
     public void startDataBaseService(){
-        if (runtime == null){
-        runtime = new ServerRuntime("cayenne-dblab.xml");
-        context = runtime.newContext();//BaseContext.getThreadObjectContext();
+        if (context == null){
+        //runtime = new ServerRuntime("cayenne-dblab.xml");
+        context = BaseContext.getThreadObjectContext();
+                //runtime.newContext();//BaseContext.getThreadObjectContext();
         }
      }
     
@@ -38,6 +40,7 @@ public class DataBaseService {
     
     public void commitChange(){
         context.commitChanges();
+        context.commitChangesToParent();
         //stopDataBaseService();
     }
     
@@ -96,9 +99,10 @@ public class DataBaseService {
             startDataBaseService();
             Zeit z = new Zeit();
             z.setZeitEingang(new Date(System.currentTimeMillis()));
-            //z.setZeitAusgang(new Date(System.currentTimeMillis()));
-            z.setToSchaechte(this.getSchaechteForID(schachtId));
             z.setToAngestellte(this.getAngestellteForID(angId));
+            
+            z.setToSchaechte(this.getSchaechteForID(schachtId));
+            
             context.registerNewObject(z);
             context.commitChanges();
         }
@@ -142,7 +146,7 @@ public class DataBaseService {
 
     public void removeAngestellte(int angId) {
         context.deleteObjects(getAngestellteForID(angId));
-        context.commitChangesToParent();//commitChanges();
+        commitChange();
     }
 
     public void removeSchaechte(int schachtId) {

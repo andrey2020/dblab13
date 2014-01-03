@@ -37,7 +37,7 @@ public class Schaechte extends CayenneDataObject {
     }
     
     
-    public static final String ID_PK_COLUMN = "id";
+    public static final String ID_PK_COLUMN = "ID";
 
     public static final Property<Boolean> GESCHLOSSEN = new Property<Boolean>("geschlossen");
     public static final Property<Integer> ID = new Property<Integer>("id","ID",2);

@@ -8,6 +8,7 @@ import org.apache.click.control.FieldSet;
 import org.apache.click.control.Form;
 import org.apache.click.control.Submit;
 import org.apache.click.control.TextField;
+import org.apache.click.extras.control.IntegerField;
 
 /**
  *
@@ -22,7 +23,7 @@ public class NewForm extends Form implements ActionListener{
         FieldSet paymentFieldSet = new FieldSet("Neuer Angestellter");
         paymentFieldSet.setStyle("background-color", "#f4f4f4");
         paymentFieldSet.add(new TextField("name",true));
-        paymentFieldSet.add(new TextField("tief"));
+        paymentFieldSet.add(new IntegerField("tief"));
         paymentFieldSet.add(new TextField("leiter_id"));
         paymentFieldSet.add(newSubmit);
         newSubmit.setActionListener(this);

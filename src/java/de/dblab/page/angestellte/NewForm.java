@@ -14,6 +14,7 @@ import org.apache.click.control.Form;
 import org.apache.click.control.Submit;
 import org.apache.click.control.TextField;
 import net.sf.click.extras.control.CalendarField; 
+import org.apache.click.extras.control.IntegerField;
 
 /**
  *
@@ -34,7 +35,7 @@ public class NewForm extends Form implements ActionListener{
         paymentFieldSet.add(new TextField("nachname",true));
         paymentFieldSet.add(fieldGeburtsdatum);
         paymentFieldSet.add(new TextField("stelle"));
-        paymentFieldSet.add(new TextField("gehalt"));
+        paymentFieldSet.add(new IntegerField("gehalt"));
         paymentFieldSet.add(newSubmit);
         newSubmit.setActionListener(this);
         //.setAttribute("onclick", "newAng();");

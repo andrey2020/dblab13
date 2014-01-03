@@ -120,3 +120,7 @@ div.content h2 {
 td.fields {
    vertical-align: top; 
 }
+
+td.label {
+   font-weight: bold;
+}

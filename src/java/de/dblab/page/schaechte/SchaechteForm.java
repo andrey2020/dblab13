@@ -187,8 +187,7 @@ public class SchaechteForm extends Form{
                 int id=beginArbeit.getValueInteger();
                 //dataBaseService.addZullassung(AngestelltePage.angId,id);
                  dataBaseService.beginArbeit(beginArbeit.getValueInteger(),SchaechtePage.schachtId);
-                         //getAngestellteForID(AngestelltePage.angId).addToSchaechteZulassung(
-                                //dataBaseService.getSchaechteForID(id));
+                 
                 getForm().copyFrom(dataBaseService.getSchaechteForID(SchaechtePage.schachtId));
                 return new ActionResult(getForm().toString(), ActionResult.HTML);
             }

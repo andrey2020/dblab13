@@ -40,6 +40,7 @@ public class Angestellte extends CayenneDataObject{
         return visiblyColumnAngestellte[type].likeIgnoreCaseExp(value);
     }
     
+  // public static final String ID_PK_COLUMN = "ID";
    
     public static final Property<Boolean> ENTLASSENE = new Property<Boolean>("entlassene");
     public static final Property<java.sql.Date> GEBURTSDATUM = new Property<java.sql.Date>("geburtsdatum","Geburtsdatum",4);
@@ -59,6 +60,18 @@ public class Angestellte extends CayenneDataObject{
                                                            Angestellte.GEHALT,
                                                            Angestellte.GEBURTSDATUM,
                                                            Angestellte.ID};
+    
+    
+    
+    
+  
+    
+
+
+
+    
+    
+    
     
     public void setEntlassene(Boolean entlassene) {
         writeProperty(ENTLASSENE.getName(), entlassene);
@@ -143,5 +156,5 @@ public class Angestellte extends CayenneDataObject{
     public List<Zeit> getZeitArray() {
         return (List<Zeit>)readProperty(ZEIT_ARRAY.getName());
     }
-
+ 
 }
