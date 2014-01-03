@@ -1,10 +1,13 @@
+/** 
+ * Hochschule Offenburg, Dezember 2013
+ * Databanken Labor 3, Gruppe 13
+ * @author Nikolaev Andrey & Ostrovskaya Anna
+ */
+
 package de.dblab.page.schaechte;
 
-import de.dblab.domain.Angestellte;
 import de.dblab.domain.Schaechte;
-import de.dblab.page.schaechte.SchaechtePage;
-import de.dblab.page.DataBaseService;
-import java.util.List;
+import de.dblab.page.HomePage;
 import org.apache.click.ActionListener;
 import org.apache.click.Control;
 import org.apache.click.control.FieldSet;
@@ -12,30 +15,26 @@ import org.apache.click.control.Form;
 import org.apache.click.control.Select;
 import org.apache.click.control.Submit;
 import org.apache.click.control.TextField;
-import org.apache.click.dataprovider.DataProvider;
 import org.apache.click.extras.control.IntegerField;
 
-/**
- *
- * @author anuta
+/* 
+ * Class SchaechteNewForm generiert HTML code auf der Seite SchaechtePage.htm
  */
+
 public class SchaechteNewForm extends Form implements ActionListener{
-    private final Submit newSubmit = new Submit("new");
-    private final DataBaseService dataBaseService = new DataBaseService();
-    
     public SchaechteNewForm(){
         super("newform");
+        FieldSet createFieldSet = new FieldSet("Neuer Angestellter");
+        createFieldSet.setStyle("background-color", "#f4f4f4");
+        createFieldSet.add(new TextField("name",true));
+        createFieldSet.add(new IntegerField("tief"));
         Select leiterId=new Select("leiter_id","Leiter");
-        FieldSet paymentFieldSet = new FieldSet("Neuer Angestellter");
-        paymentFieldSet.setStyle("background-color", "#f4f4f4");
-        paymentFieldSet.add(new TextField("name",true));
-        paymentFieldSet.add(new IntegerField("tief"));
-        leiterId.addAll(dataBaseService.getAngestellteName());
-        paymentFieldSet.add(leiterId);
-        paymentFieldSet.add(newSubmit);
+        leiterId.addAll(HomePage.dataBaseService.getAngestellteName());
+        createFieldSet.add(leiterId);
+        Submit newSubmit = new Submit("new");
         newSubmit.setActionListener(this);
-        //.setAttribute("onclick", "newAng();");
-        this.add(paymentFieldSet);        
+        createFieldSet.add(newSubmit);
+        this.add(createFieldSet);        
     }
     
     public boolean onAction(Control source) {
@@ -43,7 +42,7 @@ public class SchaechteNewForm extends Form implements ActionListener{
             Schaechte schaechte = new Schaechte();
             this.copyTo(schaechte);
             schaechte.setGeschlossen(false);
-            dataBaseService.saveObject(schaechte);
+            HomePage.dataBaseService.saveObject(schaechte);
             this.clearValues();
         } 
         return true;

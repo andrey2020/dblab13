@@ -1,8 +1,13 @@
+/** 
+ * Hochschule Offenburg, Dezember 2013
+ * Databanken Labor 3, Gruppe 13
+ * @author Nikolaev Andrey & Ostrovskaya Anna
+ */
+
 package de.dblab.page.schaechte;
 
 import de.dblab.domain.Schaechte;
 import de.dblab.page.HomePage;
-import de.dblab.page.DataBaseService;
 import org.apache.click.control.Table;
 import de.dblab.page.TemplatePage;
 import java.util.HashMap;
@@ -22,29 +27,26 @@ import org.apache.click.element.JsScript;
 import org.apache.click.extras.control.FieldColumn;
 import org.apache.click.extras.control.LinkDecorator;
 
+/* 
+ * Class SchaechtePage generiert HTML code auf der Seite SchaechtePage.htm
+ */
 
-public class SchaechtePage extends TemplatePage {
-
-    private static final long serialVersionUID = 1L;
-
-    private final Table table = new Table("table");
-    public static int schachtId = 0;
-    private final ActionLink viewLink = new ActionLink("view", "View");
-    PageLink editLink = new PageLink("Edit", SchaechteEditPage.class);
-    ActionLink deleteLink = new ActionLink("delete", "Delete");
-    private Column columnViewEdit;
-   
-  
-    private final SchaechteForm detailForm  = new SchaechteForm();
-    private final DataBaseService dataBaseService = HomePage.dataBaseService;
+public final class SchaechtePage extends TemplatePage {
     
+    public static int schachtId = -1;
+    private final Table table = new Table("table");
+    private final SchaechteForm formDetail  = new SchaechteForm();
     private final SchaechteSearchForm formSuchen;
-
+    private final SchaechteNewForm formNewSchaechte;
+    
+    private final ActionLink viewLink = new ActionLink("view", "View");
+    private final PageLink editLink = new PageLink("Edit", SchaechteEditPage.class);
+    private final ActionLink deleteLink = new ActionLink("delete", "Delete");
+    
     public SchaechtePage() {
-        dataBaseService.commitChange();
-        SchaechteNewForm formNewSchaechte= new SchaechteNewForm();
+        HomePage.dataBaseService.commitChange();
+        formNewSchaechte= new SchaechteNewForm();
         addControl(formNewSchaechte);
-        
         formSuchen=new SchaechteSearchForm ();
         addControl(formSuchen);
         initTable();
@@ -52,9 +54,6 @@ public class SchaechtePage extends TemplatePage {
     
     public void initTable(){
         addControl(table);
-        addControl(viewLink);
-        addControl(editLink);
-        addControl(deleteLink);
         table.getControlLink().addBehavior(new DefaultAjaxBehavior() {
             @Override
             public ActionResult onAction(Control source) {
@@ -67,15 +66,16 @@ public class SchaechtePage extends TemplatePage {
             @Override
             public ActionResult onAction(Control source) {
                 schachtId = viewLink.getValueInteger();
-                detailForm.copyFrom(dataBaseService.getSchaechteForID(schachtId));
-                return new ActionResult(detailForm.toString(), ActionResult.HTML);
+                formDetail.copyFrom(HomePage.dataBaseService.getSchaechteForID(schachtId));
+                return new ActionResult(formDetail.toString(), ActionResult.HTML);
             }
         });
+        
         deleteLink.addBehavior(new DefaultAjaxBehavior() {
             @Override
             public ActionResult onAction(Control source) {
                 schachtId = deleteLink.getValueInteger();
-                dataBaseService.removeSchaechte(schachtId);
+                HomePage.dataBaseService.removeSchaechte(schachtId);
                 return new ActionResult(table.toString(), ActionResult.HTML);
             }
         });
@@ -85,15 +85,11 @@ public class SchaechtePage extends TemplatePage {
         table.setBannerPosition(Table.POSITION_TOP);
         table.setSortable(true);
         table.setWidth("100%");
-
         table.addColumn(new Column("id"));
-      
         table.addColumn(new Column("name"));
-
         table.addColumn(new Column("tief"));
-
         table.addColumn(new Column("leiterVonSchaechte.vollname","Leiter"));
-
+        
         Checkbox checkbox = new Checkbox();
         checkbox.setDisabled(true);
         Column column;
@@ -104,26 +100,22 @@ public class SchaechtePage extends TemplatePage {
         
         viewLink.setAttribute("name", "View");
         viewLink.setImageSrc("/images/form.png");
-        viewLink.setTitle("View");
-        
+        viewLink.setTitle("View");        
         editLink.setImageSrc("/images/table-edit.png");
         editLink.setTitle("Edit");
         editLink.setParameter("referrer", "/page/schaechte/SchaechtePage.htm");
         deleteLink.setAttribute("name", "Delete");
         deleteLink.setImageSrc("/images/remove.png");
         deleteLink.setTitle("Delete");
-        columnViewEdit = new Column("View/Edit");
-        columnViewEdit.setTextAlign("center");
+        column = new Column("View/Edit");
+        column.setTextAlign("center");
         AbstractLink[] links = new AbstractLink[] { viewLink, editLink,deleteLink };
-        columnViewEdit.setDecorator(new LinkDecorator(table, links, "id"));
-        columnViewEdit.setSortable(false);
-        columnViewEdit.setWidth("auto");
-        table.addColumn(columnViewEdit);
-        
-
+        column.setDecorator(new LinkDecorator(table, links, "id"));
+        column.setSortable(false);
+        column.setWidth("auto");
+        table.addColumn(column);
         
         table.setDataProvider(new DataProvider<Schaechte>() {
-            private static final long serialVersionUID = 1L;
             @Override
             public List<Schaechte> getData() {
                 int type = Integer.valueOf(formSuchen.typeSelect.getValue());
@@ -139,25 +131,21 @@ public class SchaechtePage extends TemplatePage {
                 }else{
                     value = "%" + value + "%";
                 }
-                return dataBaseService.getSchaechte(type, value, formSuchen.inaktivSelect.getValue());
+                return HomePage.dataBaseService.getSchaechte(type, value, formSuchen.inaktivSelect.getValue());
             }
         });
         table.restoreState(getContext());
     }
     
-    
     @Override
     public void onPost() {
-      //  detailForm.copyFrom(dataBaseService.getSchaechteForID(schachtId));
         formSuchen.saveState(getContext());
         table.saveState(getContext());
     }
     
     @Override
     public void onRender() {
-        
         table.setPageSize(Integer.valueOf(formSuchen.sizeSelect.getValue()));
-        
     }
     
     @Override

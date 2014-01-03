@@ -1,9 +1,14 @@
+/** 
+ * Hochschule Offenburg, Dezember 2013
+ * Databanken Labor 3, Gruppe 13
+ * @author Nikolaev Andrey & Ostrovskaya Anna
+ */
 
 package de.dblab.page.schaechte;
 
 import de.dblab.domain.Schaechte;
-
-import org.apache.click.Page;
+import de.dblab.page.HomePage;
+import de.dblab.page.TemplatePage;
 import org.apache.click.control.Checkbox;
 import org.apache.click.control.FieldSet;
 import org.apache.click.control.Form;
@@ -11,14 +16,14 @@ import org.apache.click.control.HiddenField;
 import org.apache.click.control.Submit;
 import org.apache.click.control.TextField;
 import org.apache.click.util.Bindable;
-import de.dblab.page.HomePage;
-import de.dblab.page.DataBaseService;
-import de.dblab.page.TemplatePage;
 import org.apache.click.control.Select;
+import org.apache.click.extras.control.IntegerField;
 
+/* 
+ * Class SchaechteEditPage generiert HTML code auf der Seite edit-schaechte.htm
+ */
 
 public class SchaechteEditPage extends TemplatePage {
-private static final long serialVersionUID = 1L;
 
     private Form form = new Form("form");
     private HiddenField referrerField = new HiddenField("referrer", String.class);
@@ -28,10 +33,7 @@ private static final long serialVersionUID = 1L;
     @Bindable protected Integer id;
     @Bindable protected String referrer;
 
-  //  @Resource(name="customerService")
-    private final DataBaseService dataBaseService = HomePage.dataBaseService;
     Schaechte schaechte;
-    // Constructor -----------------------------------------------------------
 
     public SchaechteEditPage() {
         addControl(form);
@@ -44,24 +46,19 @@ private static final long serialVersionUID = 1L;
         subFieldSet.setStyle("background-color", "#f4f4f4");
         form.setButtonAlign("right");
         form.setJavaScriptValidation(true); 
-        
-        
         form.add(subFieldSet);
         TextField idVisibleField = new TextField("id");
         idVisibleField.setDisabled(true);
         TextField nameField = new TextField("name", true);
-        
         nameField.setFocus(true);
-        TextField tiefField = new TextField("tief");
         Select leiterId = new Select("leiter_id","Leiter");
-        leiterId.addAll(dataBaseService.getAngestellteName());
-        Checkbox istGeschlossen = new Checkbox("geschlossen");
-        
+        leiterId.addAll(HomePage.dataBaseService.getAngestellteName());
+
         subFieldSet.add(idVisibleField);
         subFieldSet.add(nameField);
-        subFieldSet.add(tiefField);
+        subFieldSet.add( new IntegerField("tief"));
         subFieldSet.add(leiterId);
-        subFieldSet.add(istGeschlossen);
+        subFieldSet.add(new Checkbox("geschlossen"));
         form.setColumns(1);
 
         form.add(new Submit("ok", "  OK  ", this, "onOkClick"));
@@ -72,23 +69,18 @@ private static final long serialVersionUID = 1L;
 
     // Event Handlers ---------------------------------------------------------
 
-    /**
+    /*
      * When page is first displayed on the GET request.
-     *
-     * @see Page#onGet()
      */
     @Override
     public void onGet() {
         if (id != null) {
-            schaechte = dataBaseService.getSchaechteForID(id);
-
+            schaechte = HomePage.dataBaseService.getSchaechteForID(id);
             if (schaechte != null) {
-                // Copy customer data to form. The idField value will be set by
-                // this call
+                // Copy customer data to form. The idField value will be set by this call
                 form.copyFrom(schaechte);
             }
         }
-
         if (referrer != null) {
             // Set HiddenField to bound referrer field
             referrerField.setValue(referrer);
@@ -97,32 +89,22 @@ private static final long serialVersionUID = 1L;
 
     public boolean onOkClick() {
         if (form.isValid()) {
-            Integer id = (Integer) idField.getValueObject();
-            schaechte = dataBaseService.getSchaechteForID(id);
-
+            schaechte = HomePage.dataBaseService.getSchaechteForID(id);
             if (schaechte == null) {
                 schaechte = new Schaechte();
             }
             form.copyTo(schaechte);
-
-            dataBaseService.commitChange();
-
-            //String referrer = referrerField.getValue();
+            HomePage.dataBaseService.commitChange();
             if (referrer != null) {
                 setRedirect(referrer);
             } else {
                 setRedirect(HomePage.class);
             }
-
-            return true;
-
-        } else {
-            return true;
         }
+        return true;
     }
 
     public boolean onCancelClick() {
-        String referrer = referrerField.getValue();
         if (referrer != null) {
             setRedirect(referrer);
         } else {
