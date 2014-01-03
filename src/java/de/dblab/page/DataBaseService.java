@@ -25,15 +25,14 @@ import org.apache.cayenne.query.SelectQuery;
  * @author anuta
  */
 public class DataBaseService {
-    //ObjectContext context; 
     ObjectContext context;
     //ServerRuntime runtime;
     
     public void startDataBaseService(){
         if (context == null){
-        //runtime = new ServerRuntime("cayenne-dblab.xml");
-        context = BaseContext.getThreadObjectContext();
-                //runtime.newContext();//BaseContext.getThreadObjectContext();
+            //runtime = new ServerRuntime("cayenne-dblab.xml");
+            //contex = runtime.newContext();//BaseContext.getThreadObjectContext();
+            context = BaseContext.getThreadObjectContext();
         }
      }
     
@@ -68,9 +67,7 @@ public class DataBaseService {
 
     public List<Schaechte> getVerboteneSchaechte(int angId) {
         startDataBaseService();
-        
-        Expression exp;
-        exp = ExpressionFactory.notInExp(Schaechte.ID.getName(),getAngestellteForID(angId).getSchaechteZulassung());
+        Expression exp = ExpressionFactory.notInExp(Schaechte.ID.getName(),getAngestellteForID(angId).getSchaechteZulassung());
         SelectQuery query = new SelectQuery(Schaechte.class,exp);
         return context.performQuery(query);
     }
@@ -82,64 +79,49 @@ public class DataBaseService {
      }
 
     public List<Zeit> getZeitFromAngestellte(int angId) {
-         Expression exp;
         startDataBaseService();
-        exp = ExpressionFactory.likeExp(Zeit.TO_ANGESTELLTE.getName(),angId);
+        Expression exp = ExpressionFactory.likeExp(Zeit.TO_ANGESTELLTE.getName(),angId);
         SelectQuery query = new SelectQuery(Zeit.class, exp);
-        
-      
         return context.performQuery(query);
         
     }
 
-        public void beginArbeit(Integer angId, int schachtId) {
-            startDataBaseService();
-            Zeit z = new Zeit();
-            z.setZeitEingang(new Date(System.currentTimeMillis()));
-            z.setToAngestellte(this.getAngestellteForID(angId));
-            
-            z.setToSchaechte(this.getSchaechteForID(schachtId));
-            
-            context.registerNewObject(z);
-            context.commitChanges();
-        }
+    public void beginArbeit(Integer angId, int schachtId) {
+        startDataBaseService();
+        Zeit z = new Zeit();
+        z.setZeitEingang(new Date(System.currentTimeMillis()));
+        z.setToAngestellte(this.getAngestellteForID(angId));
+        z.setToSchaechte(this.getSchaechteForID(schachtId));
+        context.registerNewObject(z);
+        context.commitChanges();
+    }
 
-        public List<Angestellte> getAngestellteMoeglich(int schachtId) {
+    public List<Angestellte> getAngestellteMoeglich(int schachtId) {
+        Expression ex = ExpressionFactory.notInExp(Angestellte.ID.getName(), 
+                (List<Angestellte>) context.performQuery(
+                new SelectQuery(Angestellte.class, 
+                ExpressionFactory.matchExp("zeitArray.zeitAusgang", null)))).andExp(
+                ExpressionFactory.likeExp("schaechteZulassung.id",schachtId));
+        SelectQuery query = new SelectQuery(Angestellte.class, ex);
+        return (List<Angestellte>) context.performQuery(query);
+    }
 
-            Expression ex = ExpressionFactory.notInExp(Angestellte.ID.getName(), 
-                    (List<Angestellte>) context.performQuery(
-                    new SelectQuery(Angestellte.class, 
-                    ExpressionFactory.matchExp("zeitArray.zeitAusgang", null)))).andExp(
-                    ExpressionFactory.likeExp("schaechteZulassung.id",schachtId));
-          
+    public void endeArbeit(Integer angId) {
+        startDataBaseService();
+        Expression ex = ExpressionFactory.likeExp(Zeit.TO_ANGESTELLTE.getName(), angId);
+        Expression ex2=ExpressionFactory.matchExp(Zeit.ZEIT_AUSGANG.getName(), null).andExp(ex);
+        SelectQuery query = new SelectQuery(Zeit.class, ex2);
+        Zeit z=(Zeit) context.performQuery(query).get(0);
+        z.setZeitAusgang(new Date(System.currentTimeMillis()));
+        context.commitChanges();
+    }
 
-            SelectQuery query = new SelectQuery(Angestellte.class, ex);
-
-            return (List<Angestellte>) context.performQuery(query);
-            
-        }
-
-        public void endeArbeit(Integer angId) {
-            startDataBaseService();
-            Expression ex = ExpressionFactory.likeExp(Zeit.TO_ANGESTELLTE.getName(), angId);
-            Expression ex2=ExpressionFactory.matchExp(Zeit.ZEIT_AUSGANG.getName(), null).andExp(ex);
-            
-            SelectQuery query = new SelectQuery(Zeit.class, ex2);
-            Zeit z=(Zeit) context.performQuery(query).get(0);
-            z.setZeitAusgang(new Date(System.currentTimeMillis()));
-            context.commitChanges();
-        }
-
-        public List<Zeit> getAngestellteImSchacht(int schachtId) {
-           
-            Expression ex2 = Zeit.TO_SCHAECHTE.eq(getSchaechteForID(schachtId));
-            Expression ex = ExpressionFactory.matchExp(Zeit.ZEIT_AUSGANG.getName(), null).andExp(ex2);
-            SelectQuery query = new SelectQuery(Zeit.class, ex);
-            
-            return (List<Zeit>) context.performQuery(query);
-            
-            
-        }
+    public List<Zeit> getAngestellteImSchacht(int schachtId) {
+        Expression ex2 = Zeit.TO_SCHAECHTE.eq(getSchaechteForID(schachtId));
+        Expression ex = ExpressionFactory.matchExp(Zeit.ZEIT_AUSGANG.getName(), null).andExp(ex2);
+        SelectQuery query = new SelectQuery(Zeit.class, ex);
+        return (List<Zeit>) context.performQuery(query);
+    }
 
     public void removeAngestellte(int angId) {
         context.deleteObjects(getAngestellteForID(angId));
@@ -148,7 +130,7 @@ public class DataBaseService {
 
     public void removeSchaechte(int schachtId) {
         context.deleteObjects(getSchaechteForID(schachtId));
-        context.commitChangesToParent();//context.commitChanges();
+        context.commitChanges();
     }
 
     public HashMap<Integer,String> getAngestellteName() {
