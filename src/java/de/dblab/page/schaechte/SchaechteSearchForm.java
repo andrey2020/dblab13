@@ -2,11 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.dblab.page.angestellte;
+package de.dblab.page.schaechte;
 
-import de.dblab.domain.Angestellte;
-import net.sf.click.extras.control.CalendarField;
-import org.apache.click.control.Field;
+import de.dblab.domain.Schaechte;
 import org.apache.click.control.FieldSet;
 import org.apache.click.control.Form;
 import org.apache.click.control.Select;
@@ -17,16 +15,14 @@ import org.apache.click.control.TextField;
  *
  * @author anuta
  */
-public class SearchForm extends Form{
-    public  TextField searchField;   
+public class SchaechteSearchForm  extends Form{
+  public final TextField searchField = new TextField("Suche","Was?");    
     public final Select sizeSelect = new Select("pageSize","Seitengröße");
     public final Select typeSelect = new Select("Typ","Wo?");
-    public final Select firedSelect = new Select("zeigenEntlassente","");
+    public final Select inaktivSelect = new Select("zeigenInaktiv","");
 
-    public SearchForm(){
+    public SchaechteSearchForm(){
         super("form");
-        
-        searchField= new TextField("Suche","Was?") ; 
         Submit submit = new Submit("suchen");
     
         FieldSet paymentFieldSet = new FieldSet("Suchen");
@@ -37,17 +33,17 @@ public class SearchForm extends Form{
         searchField.setTabIndex(1);
         searchField.setFocus(true);
         paymentFieldSet.add(typeSelect);
+        paymentFieldSet.add(inaktivSelect);
         paymentFieldSet.add(submit);
-        paymentFieldSet.add(firedSelect);
         paymentFieldSet.add(sizeSelect);
         this.setColumns(3);
         
-        firedSelect.addAll(Angestellte.stateAngestellteArray);
-        typeSelect.addAll(Angestellte.getColumnAngestellte());
-        sizeSelect.addAll(new String[] {"5", "10", "15", "20", "30", "40", "50", "100", "150", "200"});
+        inaktivSelect.addAll(Schaechte.stateSchaechteArray);
+        typeSelect.addAll(Schaechte.getColumnSchaechte());
+        sizeSelect.addAll(new String[] {"5", "10", "15", "20", "50", "100"});
         sizeSelect.setAttribute("onchange", "form.submit();");
         typeSelect.setAttribute("onchange", "form.submit();");
-        firedSelect.setAttribute("onchange", "form.submit();");
+        inaktivSelect.setAttribute("onchange", "form.submit();");
         //searchField.setActionListener(this);
         submit.setAttribute("onclick", "form.submit();");
         
@@ -56,3 +52,4 @@ public class SearchForm extends Form{
 
 
 }
+

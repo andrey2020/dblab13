@@ -30,7 +30,7 @@ public class SchaechtePage extends TemplatePage {
     private final Table table = new Table("table");
     public static int schachtId = 0;
     private final ActionLink viewLink = new ActionLink("view", "View");
-    PageLink editLink = new PageLink("Edit", EditSchaechte.class);
+    PageLink editLink = new PageLink("Edit", SchaechteEditPage.class);
     ActionLink deleteLink = new ActionLink("delete", "Delete");
     private Column columnViewEdit;
    
@@ -38,14 +38,14 @@ public class SchaechtePage extends TemplatePage {
     private final SchaechteForm detailForm  = new SchaechteForm();
     private final DataBaseService dataBaseService = HomePage.dataBaseService;
     
-    private final SearchForm formSuchen;
+    private final SchaechteSearchForm formSuchen;
 
     public SchaechtePage() {
         dataBaseService.commitChange();
-        NewForm formNewSchaechte= new NewForm();
+        SchaechteNewForm formNewSchaechte= new SchaechteNewForm();
         addControl(formNewSchaechte);
         
-        formSuchen=new SearchForm ();
+        formSuchen=new SchaechteSearchForm ();
         addControl(formSuchen);
         initTable();
     }

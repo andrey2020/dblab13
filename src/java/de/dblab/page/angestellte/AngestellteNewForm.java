@@ -1,37 +1,41 @@
-package de.dblab.page.schaechte;
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package de.dblab.page.angestellte;
 
 import de.dblab.domain.Angestellte;
-import de.dblab.domain.Schaechte;
-import de.dblab.page.schaechte.SchaechtePage;
 import de.dblab.page.DataBaseService;
-import java.util.List;
+import java.util.Date;
 import org.apache.click.ActionListener;
 import org.apache.click.Control;
 import org.apache.click.control.FieldSet;
 import org.apache.click.control.Form;
-import org.apache.click.control.Select;
 import org.apache.click.control.Submit;
 import org.apache.click.control.TextField;
-import org.apache.click.dataprovider.DataProvider;
+import net.sf.click.extras.control.CalendarField; 
 import org.apache.click.extras.control.IntegerField;
 
 /**
  *
  * @author anuta
  */
-public class NewForm extends Form implements ActionListener{
+public class AngestellteNewForm extends Form implements ActionListener{
+    private final CalendarField fieldGeburtsdatum = new CalendarField("gebutrtsdatum",true);
     private final Submit newSubmit = new Submit("new");
     private final DataBaseService dataBaseService = new DataBaseService();
     
-    public NewForm(){
+    public AngestellteNewForm(){
         super("newform");
-        Select leiterId=new Select("leiter_id","Leiter");
+        fieldGeburtsdatum.setDate(new Date(System.currentTimeMillis()));
+        fieldGeburtsdatum.setStyle("brown");
         FieldSet paymentFieldSet = new FieldSet("Neuer Angestellter");
         paymentFieldSet.setStyle("background-color", "#f4f4f4");
         paymentFieldSet.add(new TextField("name",true));
-        paymentFieldSet.add(new IntegerField("tief"));
-        leiterId.addAll(dataBaseService.getAngestellteName());
-        paymentFieldSet.add(leiterId);
+        paymentFieldSet.add(new TextField("nachname",true));
+        paymentFieldSet.add(fieldGeburtsdatum);
+        paymentFieldSet.add(new TextField("stelle"));
+        paymentFieldSet.add(new IntegerField("gehalt"));
         paymentFieldSet.add(newSubmit);
         newSubmit.setActionListener(this);
         //.setAttribute("onclick", "newAng();");
@@ -40,10 +44,11 @@ public class NewForm extends Form implements ActionListener{
     
     public boolean onAction(Control source) {
         if (this.isValid()){
-            Schaechte schaechte = new Schaechte();
-            this.copyTo(schaechte);
-            schaechte.setGeschlossen(false);
-            dataBaseService.saveObject(schaechte);
+            Angestellte angestellte = new Angestellte();
+            this.copyTo(angestellte);
+            angestellte.setGeburtsdatum(fieldGeburtsdatum.getDate());
+            angestellte.setEntlassene(false);
+            dataBaseService.saveObject(angestellte);
             this.clearValues();
         } 
         return true;

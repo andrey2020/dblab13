@@ -1,7 +1,9 @@
 
-package de.dblab.page.schaechte;
+package de.dblab.page.angestellte;
 
-import de.dblab.domain.Schaechte;
+
+
+import de.dblab.domain.Angestellte;
 
 import org.apache.click.Page;
 import org.apache.click.control.Checkbox;
@@ -10,14 +12,15 @@ import org.apache.click.control.Form;
 import org.apache.click.control.HiddenField;
 import org.apache.click.control.Submit;
 import org.apache.click.control.TextField;
+import org.apache.click.extras.control.IntegerField;
 import org.apache.click.util.Bindable;
 import de.dblab.page.HomePage;
 import de.dblab.page.DataBaseService;
 import de.dblab.page.TemplatePage;
-import org.apache.click.control.Select;
+import net.sf.click.extras.control.CalendarField;
 
 
-public class EditSchaechte extends TemplatePage {
+public class AngestellteEditPage extends TemplatePage {
 private static final long serialVersionUID = 1L;
 
     private Form form = new Form("form");
@@ -29,13 +32,13 @@ private static final long serialVersionUID = 1L;
     @Bindable protected String referrer;
 
   //  @Resource(name="customerService")
-    private final DataBaseService dataBaseService = HomePage.dataBaseService;
-    Schaechte schaechte;
+   private final DataBaseService dataBaseService = HomePage.dataBaseService;
+    Angestellte angestellte;
     // Constructor -----------------------------------------------------------
 
-    public EditSchaechte() {
+    public AngestellteEditPage() {
         addControl(form);
-        FieldSet subFieldSet = new FieldSet("schaechte");
+        FieldSet subFieldSet = new FieldSet("angestellte");
         form.add(referrerField);
         form.add(idField);
         
@@ -50,18 +53,24 @@ private static final long serialVersionUID = 1L;
         TextField idVisibleField = new TextField("id");
         idVisibleField.setDisabled(true);
         TextField nameField = new TextField("name", true);
-        
+        nameField.setWidth("250px");
         nameField.setFocus(true);
-        TextField tiefField = new TextField("tief");
-        Select leiterId = new Select("leiter_id","Leiter");
-        leiterId.addAll(dataBaseService.getAngestellteName());
-        Checkbox istGeschlossen = new Checkbox("geschlossen");
+        TextField nachnameField = new TextField("nachname", true);
+        nachnameField.setWidth("250px");
+        CalendarField  geburtsDatumField = new CalendarField ("geburtsdatum", true);       
+        geburtsDatumField.setStyle("brown");
+        TextField stelleField = new TextField("stelle");
+        IntegerField gehaltField = new IntegerField("gehalt");
+        gehaltField.setWidth("40px");
+        Checkbox istEntlassen = new Checkbox("entlassene");
         
         subFieldSet.add(idVisibleField);
         subFieldSet.add(nameField);
-        subFieldSet.add(tiefField);
-        subFieldSet.add(leiterId);
-        subFieldSet.add(istGeschlossen);
+        subFieldSet.add(nachnameField);
+        subFieldSet.add(geburtsDatumField);
+        subFieldSet.add(stelleField);
+        subFieldSet.add(gehaltField);
+        subFieldSet.add(istEntlassen);
         form.setColumns(1);
 
         form.add(new Submit("ok", "  OK  ", this, "onOkClick"));
@@ -80,12 +89,12 @@ private static final long serialVersionUID = 1L;
     @Override
     public void onGet() {
         if (id != null) {
-            schaechte = dataBaseService.getSchaechteForID(id);
+            angestellte = dataBaseService.getAngestellteForID(id);
 
-            if (schaechte != null) {
+            if (angestellte != null) {
                 // Copy customer data to form. The idField value will be set by
                 // this call
-                form.copyFrom(schaechte);
+                form.copyFrom(angestellte);
             }
         }
 
@@ -98,12 +107,12 @@ private static final long serialVersionUID = 1L;
     public boolean onOkClick() {
         if (form.isValid()) {
             Integer id = (Integer) idField.getValueObject();
-            schaechte = dataBaseService.getSchaechteForID(id);
+            angestellte = dataBaseService.getAngestellteForID(id);
 
-            if (schaechte == null) {
-                schaechte = new Schaechte();
+            if (angestellte == null) {
+                angestellte = new Angestellte();
             }
-            form.copyTo(schaechte);
+            form.copyTo(angestellte);
 
             dataBaseService.commitChange();
 
