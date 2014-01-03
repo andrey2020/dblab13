@@ -22,6 +22,7 @@ public class Schaechte extends CayenneDataObject {
         }
         return stateSchaechte;
     }
+    
     public static HashMap<Integer, String> getColumnSchaechte(){
         if (columnSchaechte == null){
             columnSchaechte = new HashMap<Integer, String>(); 
@@ -38,7 +39,6 @@ public class Schaechte extends CayenneDataObject {
     
     
     public static final String ID_PK_COLUMN = "ID";
-
     public static final Property<Boolean> GESCHLOSSEN = new Property<Boolean>("geschlossen");
     public static final Property<Integer> ID = new Property<Integer>("id","ID",2);
     public static final Property<Integer> LEITER_ID = new Property<Integer>("leiter_id");
@@ -47,7 +47,6 @@ public class Schaechte extends CayenneDataObject {
     public static final Property<List<Angestellte>> ANGESTELLTEZULASSUNG = new Property<List<Angestellte>>("angestellteZulassung");
     public static final Property<Angestellte> LEITERVONSCHAECHTE = new Property<Angestellte>("leiterVonSchaechte");
     public static final Property<List<Zeit>> ZEIT_ARRAY = new Property<List<Zeit>>("zeitArray");
-
     public static final Property[] visiblyColumnSchaechte = {Schaechte.NAME,
                                                            Schaechte.TIEF,
                                                            Schaechte.ID};
