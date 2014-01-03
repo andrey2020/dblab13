@@ -14,6 +14,7 @@ import org.apache.click.util.Bindable;
 import de.dblab.page.HomePage;
 import de.dblab.page.DataBaseService;
 import de.dblab.page.TemplatePage;
+import org.apache.click.control.Select;
 
 
 public class EditSchaechte extends TemplatePage {
@@ -52,7 +53,8 @@ private static final long serialVersionUID = 1L;
         
         nameField.setFocus(true);
         TextField tiefField = new TextField("tief");
-        TextField leiterId = new TextField("leiter_id");
+        Select leiterId = new Select("leiter_id","Leiter");
+        leiterId.addAll(dataBaseService.getAngestellteName());
         Checkbox istGeschlossen = new Checkbox("geschlossen");
         
         subFieldSet.add(idVisibleField);

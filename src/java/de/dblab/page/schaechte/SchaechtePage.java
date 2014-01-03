@@ -33,7 +33,7 @@ public class SchaechtePage extends TemplatePage {
     PageLink editLink = new PageLink("Edit", EditSchaechte.class);
     ActionLink deleteLink = new ActionLink("delete", "Delete");
     private Column columnViewEdit;
-    private Column column;
+   
   
     private final SchaechteForm detailForm  = new SchaechteForm();
     private final DataBaseService dataBaseService = HomePage.dataBaseService;
@@ -41,7 +41,7 @@ public class SchaechtePage extends TemplatePage {
     private final SearchForm formSuchen;
 
     public SchaechtePage() {
-        
+        dataBaseService.commitChange();
         NewForm formNewSchaechte= new NewForm();
         addControl(formNewSchaechte);
         
@@ -54,7 +54,7 @@ public class SchaechtePage extends TemplatePage {
         addControl(table);
         addControl(viewLink);
         addControl(editLink);
-       addControl(deleteLink);
+        addControl(deleteLink);
         table.getControlLink().addBehavior(new DefaultAjaxBehavior() {
             @Override
             public ActionResult onAction(Control source) {
@@ -87,13 +87,16 @@ public class SchaechtePage extends TemplatePage {
         table.setWidth("100%");
 
         table.addColumn(new Column("id"));
-        
+      
         table.addColumn(new Column("name"));
 
         table.addColumn(new Column("tief"));
 
+        table.addColumn(new Column("leiterVonSchaechte.vollname","Leiter"));
+
         Checkbox checkbox = new Checkbox();
         checkbox.setDisabled(true);
+        Column column;
         column = new FieldColumn("geschlossen", checkbox);
         column.setTextAlign("center");
         column.setWidth("50px");

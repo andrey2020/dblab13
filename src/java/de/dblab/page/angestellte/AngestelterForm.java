@@ -87,7 +87,7 @@ public final class AngestelterForm extends Form{
     private void initFormComponent(){
 
         FieldSet subFieldSet = new FieldSet("Angestellter");
-        subFieldSet.setWidth("410px");
+
         componentform.setAttribute("background-color", "#f4f4f4");
         componentform.add(subFieldSet);
         subFieldSet.setStyle("background-color", "#f4f4f4");
@@ -159,12 +159,13 @@ public final class AngestelterForm extends Form{
         //ausgangColumn.setWidth("210px");
         //eingangColumn.setWidth("210px");
         tableZeit.addColumn(ausgangColumn);
+        tableZeit.addColumn(new Column("arbeitsZeit"));
         tableZeit.setSortedColumn("zeitEingang");
         tableZeit.setSortedColumn("zeitAusgang");
         tableZeit.setShowBanner(true);
         tableZeit.setPageSize(7);
 
-        tableZeit.setWidth("555px");
+        tableZeit.setWidth("100%");
         
                 
 

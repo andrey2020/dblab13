@@ -52,11 +52,7 @@ public final class AngestelltePage extends TemplatePage {
     // Constructor ------------------------------------------------------------
 
     public AngestelltePage() {
-     /*   typeSearchList.add(new TextField());
-        typeSearchList.add(new TextField());
-        typeSearchList.add(new TextField());
-        typeSearchList.add(new CalendarField());
-        typeSearchList.add(new TextField());*/
+        dataBaseService.commitChange();
         NewForm formNewAngestellter= new NewForm();
         addControl(formNewAngestellter);
         

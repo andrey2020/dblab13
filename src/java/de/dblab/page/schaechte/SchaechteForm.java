@@ -101,10 +101,9 @@ public class SchaechteForm extends Form{
         
         TextField tiefField = new TextField("tief");
         tiefField.setDisabled(true);
-        TextField leiterName = new TextField("leiterVonSchaechte.name","Leiter");
+        TextField leiterName = new TextField("leiterVonSchaechte.vollname","Leiter");
         leiterName.setDisabled(true);
-        TextField leiterNachname = new TextField("leiterVonSchaechte.nachname", "Leiter");
-        leiterNachname.setDisabled(true);
+        
         Checkbox istGeschlossen = new Checkbox("geschlossen");
         istGeschlossen.setDisabled(true);
         
@@ -112,7 +111,6 @@ public class SchaechteForm extends Form{
         subFieldSet.add(nameField);
         subFieldSet.add(tiefField);
         subFieldSet.add(leiterName);
-        subFieldSet.add(leiterNachname);
         subFieldSet.add(istGeschlossen);
         this.add(closeButton);
         closeButton.setOnClick("form.submit();");
@@ -149,6 +147,7 @@ public class SchaechteForm extends Form{
         ausgangColumn.setWidth("160px");
         eingangColumn.setWidth("160px");
         tableZeit.addColumn(ausgangColumn);
+        tableZeit.addColumn(new Column("arbeitsZeit"));
         tableZeit.setSortedColumn("zeitEingang");
         tableZeit.setSortedAscending(false);
         

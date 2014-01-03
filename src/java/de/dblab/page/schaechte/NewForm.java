@@ -1,13 +1,18 @@
 package de.dblab.page.schaechte;
 
+import de.dblab.domain.Angestellte;
 import de.dblab.domain.Schaechte;
+import de.dblab.page.schaechte.SchaechtePage;
 import de.dblab.page.DataBaseService;
+import java.util.List;
 import org.apache.click.ActionListener;
 import org.apache.click.Control;
 import org.apache.click.control.FieldSet;
 import org.apache.click.control.Form;
+import org.apache.click.control.Select;
 import org.apache.click.control.Submit;
 import org.apache.click.control.TextField;
+import org.apache.click.dataprovider.DataProvider;
 import org.apache.click.extras.control.IntegerField;
 
 /**
@@ -20,11 +25,13 @@ public class NewForm extends Form implements ActionListener{
     
     public NewForm(){
         super("newform");
+        Select leiterId=new Select("leiter_id","Leiter");
         FieldSet paymentFieldSet = new FieldSet("Neuer Angestellter");
         paymentFieldSet.setStyle("background-color", "#f4f4f4");
         paymentFieldSet.add(new TextField("name",true));
         paymentFieldSet.add(new IntegerField("tief"));
-        paymentFieldSet.add(new TextField("leiter_id"));
+        leiterId.addAll(dataBaseService.getAngestellteName());
+        paymentFieldSet.add(leiterId);
         paymentFieldSet.add(newSubmit);
         newSubmit.setActionListener(this);
         //.setAttribute("onclick", "newAng();");

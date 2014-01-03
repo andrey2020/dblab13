@@ -49,6 +49,7 @@ public class Angestellte extends CayenneDataObject{
     public static final Property<String> NACHNAME = new Property<String>("nachname","Nachname",1);
     public static final Property<String> NAME = new Property<String>("name","Name",0);
     public static final Property<String> STELLE = new Property<String>("stelle","Stelle",2);
+    public static final Property<String> VOLLNAME = new Property<String>("vollname");
     
     public static final Property<List<Schaechte>> LEITERVONSCHAECHTE = new Property<List<Schaechte>>("leiterVonSchaechte");
     public static final Property<List<Zeit>> ZEIT_ARRAY = new Property<List<Zeit>>("zeitArray");
@@ -67,8 +68,11 @@ public class Angestellte extends CayenneDataObject{
   
     
 
-
-
+    public String getVollname() {
+        String s;
+        s=this.getName()+" "+this.getNachname();
+        return s;
+    }
     
     
     

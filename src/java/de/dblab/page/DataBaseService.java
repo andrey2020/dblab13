@@ -9,6 +9,7 @@ import de.dblab.domain.Schaechte;
 import de.dblab.domain.Zeit;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import org.apache.cayenne.BaseContext;
 import org.apache.cayenne.CayenneDataObject;
@@ -36,15 +37,11 @@ public class DataBaseService {
         }
      }
     
-
-    
     public void commitChange(){
+        startDataBaseService();
         context.commitChanges();
-        context.commitChangesToParent();
-        //stopDataBaseService();
     }
     
-
     public List<Angestellte> getAngestelltes(int type, Object value, String etlassente) {
         startDataBaseService();
         SelectQuery query = new SelectQuery(Angestellte.class, Angestellte.getExpressionAngestellte(type,value));
@@ -152,5 +149,14 @@ public class DataBaseService {
     public void removeSchaechte(int schachtId) {
         context.deleteObjects(getSchaechteForID(schachtId));
         context.commitChangesToParent();//context.commitChanges();
+    }
+
+    public HashMap<Integer,String> getAngestellteName() {
+        List<Angestellte> ang = this.getAngestelltes(1, "%", "im Betrieb");
+        HashMap<Integer,String> s= new HashMap<Integer,String>();
+        for(int i=0;i<ang.size();i++){
+           s.put(ang.get(i).getId(),ang.get(i).getVollname());
+        }
+        return s;
     }
  }
