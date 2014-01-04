@@ -6,7 +6,7 @@
 */
 
 html, body {
-  height: 590px;
+    height: 590px;
 }
 
 body {
@@ -17,11 +17,11 @@ body {
 }
 
 div.page {
-  margin: 0 auto;
-  text-align: left;
-  background: #ffffff;
-  width: 90%;
-  min-height: 100%;
+    margin: 0 auto;
+    text-align: left;
+    background: #ffffff;
+    width: 90%;
+    min-height: 100%;
 }
 
 div.header {
