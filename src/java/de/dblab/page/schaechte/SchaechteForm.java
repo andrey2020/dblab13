@@ -115,8 +115,9 @@ public class SchaechteForm extends Form{
         ausgangColumn.setWidth("160px");
         eingangColumn.setWidth("160px");
         tableZeit.addColumn(new Column("arbeitsZeit"));
-        tableZeit.setSortedColumn("zeitEingang");
-        tableZeit.setSortedAscending(false);
+        
+        tableZeit.setSortedColumn("zeitAusgang");
+        tableZeit.setSortedAscending(true);
         tableZeit.setSortable(true);
         tableZeit.setShowBanner(true);
         tableZeit.setPageSize(5);
