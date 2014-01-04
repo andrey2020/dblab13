@@ -35,19 +35,18 @@ public final class SchaechtePage extends TemplatePage {
     
     public static int schachtId = -1;
     private final Table table = new Table("table");
-    private final SchaechteForm formDetail  = new SchaechteForm();
-    private final SchaechteSearchForm formSuchen;
-    private final SchaechteNewForm formNewSchaechte;
     
     private final ActionLink viewLink = new ActionLink("view", "View");
     private final PageLink editLink = new PageLink("Edit", SchaechteEditPage.class);
     private final ActionLink deleteLink = new ActionLink("delete", "Delete");
     
+    private final SchaechteForm formDetail  = new SchaechteForm();
+    private final SchaechteSearchForm formSuchen = new SchaechteSearchForm();
+    private final SchaechteNewForm formNewSchaechte = new SchaechteNewForm();
+    
     public SchaechtePage() {
         HomePage.dataBaseService.commitChange();
-        formNewSchaechte= new SchaechteNewForm();
         addControl(formNewSchaechte);
-        formSuchen=new SchaechteSearchForm ();
         addControl(formSuchen);
         initTable();
     }

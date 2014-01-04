@@ -36,19 +36,18 @@ public final class AngestelltePage extends TemplatePage {
     
     public static int angId = -1;
     private final Table table = new Table("table");
-    private final AngestelterForm detailForm  = new AngestelterForm();
-    private final AngestellteSearchForm formSuchen;
-    AngestellteNewForm formNewAngestellter;
 
     private final ActionLink deleteLink = new ActionLink("delete", "Delete");
     private final ActionLink viewLink = new ActionLink("view", "View");
     private final PageLink editLink = new PageLink("Edit", AngestellteEditPage.class);
+    
+    private final AngestelterForm detailForm  = new AngestelterForm();
+    private final AngestellteSearchForm formSuchen = new AngestellteSearchForm();;
+    private final AngestellteNewForm formNewAngestellter = new AngestellteNewForm();
    
     public AngestelltePage() {
         HomePage.dataBaseService.commitChange();
-        formNewAngestellter= new AngestellteNewForm();
         addControl(formNewAngestellter);
-        formSuchen=new AngestellteSearchForm ();
         addControl(formSuchen);
         initTable();
     }

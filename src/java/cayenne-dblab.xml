@@ -7,13 +7,20 @@
 		>
 		<map-ref name="dblab"/>
 		<data-source>
-			<driver value="oracle.jdbc.driver.OracleDriver"/>
+                    
+                        <!-- häusliche Verbindung mit MySQL 
+                        <driver value="com.mysql.jdbc.Driver"/>
+			<url value="jdbc:mysql://mediaserver/DBLAB13"/>     
+                        <login userName="admin" password="12345"/>
+                        -->
                         
-                        <!-- häusliche Verbindung -->
+                        <!-- häusliche Verbindung mit Oracle Express -->
+                        <driver value="oracle.jdbc.driver.OracleDriver"/>
 			<url value="jdbc:oracle:thin:@mediaserver:1521:xe"/>
                         <login userName="dblab13" password="12345"/>
                         
-                        <!-- Hochschule Verbindung
+                        <!-- Hochschule Verbindung mit Oracle
+                        <driver value="oracle.jdbc.driver.OracleDriver"/>
                         <url value="jdbc:oracle:thin:@bert.mi.fh-offenburg.de:1521:orcl"/>
                         <login userName="dblab13" password="dblab13"/>
                         -->
