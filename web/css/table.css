@@ -1,3 +1,10 @@
+/*
+ * Hochschule Offenburg, Dezember 2013
+ * Databanken Labor 3, Gruppe 13
+ * @author Nikolaev Andrey & Ostrovskaya Anna
+ * 
+*/
+
 table.blue1, table.blue2, table.complex, table.isi, table.its, table.mars, table.nocol, table.orange1, table.orange2, table.simple, table.report {
 	border-collapse: collapse;
 }

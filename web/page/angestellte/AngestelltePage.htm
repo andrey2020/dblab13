@@ -1,29 +1,31 @@
+ <!--
+ * Hochschule Offenburg, Dezember 2013
+ * Databanken Labor 3, Gruppe 13
+ * @author Nikolaev Andrey & Ostrovskaya Anna
+ -->
+ 
+ 
+<!--
+  SchaechtePage.class generiert auf dieser Seite HTML-code.
+  Definition der Zuordnung zwischen der Seite und Klasse findet sich im File "Click.xml".
+-->
 
 <html>
-<head>
-<meta charset="UTF-8"/>
-<title>Steurung des Bergwerk</title>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Steurung des Bergwerk</title>
 	<link rel="stylesheet" href="css/table.css" type="text/css">
- 
-</head>
-<body>
-        <div id="result">
-    
-        </div>
-    
-    
-    <table width="100%">
-        <tr>
-            <td align="left" valign="top">${form}</td>
-            <td align="right" valign="top">$newform</td>
-        </tr>
-    </table>
-    
-
-<div id="tableContainer">
-         $table
-</div>
-    
-
-</body>
+    </head>
+    <body>
+        <div id="result"></div>
+        
+        <table width="100%">
+            <tr>
+                <td align="left" valign="top">$form</td>
+                <td align="right" valign="top">$newform</td>
+            </tr>
+        </table>
+        
+        <div id="tableContainer">$table</div>
+    </body>
 </html>
