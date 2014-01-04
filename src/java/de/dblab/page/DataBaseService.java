@@ -1,7 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/** 
+ * Hochschule Offenburg, Dezember 2013
+ * Databanken Labor 3, Gruppe 13
+ * @author Nikolaev Andrey & Ostrovskaya Anna
  */
+
 package de.dblab.page;
 
 import de.dblab.domain.Angestellte;
@@ -17,10 +19,10 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.SelectQuery;
 
-/**
- *
- * @author anuta
+/* 
+ * Class DataBaseService beschreibt Zusammenwirken zwischen Databankenobjekten und Javaobjekten
  */
+
 public class DataBaseService {
     ObjectContext context;
     //ServerRuntime runtime;

@@ -1,15 +1,14 @@
-package de.dblab.service.cayenne;
+/** 
+ * Hochschule Offenburg, Dezember 2013
+ * Databanken Labor 3, Gruppe 13
+ * @author Nikolaev Andrey & Ostrovskaya Anna
+ */
 
+package de.dblab.service.cayenne;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 
-
-/**
- * @param <E>
- *            The type this property returns.
- * @since 3.2
- */
 public class Property<E> extends org.apache.cayenne.exp.Property<E>{
 
     /**
@@ -19,7 +18,6 @@ public class Property<E> extends org.apache.cayenne.exp.Property<E>{
      */
     private String titleName = "";
     private int id = -1;
-    
     
     public Property(String name, String titleName, int id) {
         super(name);
@@ -31,8 +29,6 @@ public class Property<E> extends org.apache.cayenne.exp.Property<E>{
         super(name);
     }
 
-    
-   
     public String getTitleName() {
         return titleName;
     }
