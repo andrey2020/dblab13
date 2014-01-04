@@ -1,3 +1,9 @@
+/** 
+ * Hochschule Offenburg, Dezember 2013
+ * Databanken Labor 3, Gruppe 13
+ * @author Nikolaev Andrey & Ostrovskaya Anna
+ */
+
 package de.dblab.domain;
 
 import java.util.Date;
@@ -7,7 +13,9 @@ import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.exp.Expression;
 import de.dblab.service.cayenne.Property;
 
-
+/* 
+ * Class Angestellte beschreibt Tabelle Angestellte von Datenbank.
+ */
 
 public class Angestellte extends CayenneDataObject{
    
@@ -18,7 +26,6 @@ public class Angestellte extends CayenneDataObject{
     public static HashMap<String, Expression> getStateAngestellte(){
         if (stateAngestellte == null){
             stateAngestellte = new HashMap<String, Expression>();
-
             stateAngestellte.put(stateAngestellteArray[0], Angestellte.ENTLASSENE.isNotNull());
             stateAngestellte.put(stateAngestellteArray[1], Angestellte.ENTLASSENE.isTrue());
             stateAngestellte.put(stateAngestellteArray[2], Angestellte.ENTLASSENE.isFalse());
@@ -40,8 +47,7 @@ public class Angestellte extends CayenneDataObject{
         return visiblyColumnAngestellte[type].likeIgnoreCaseExp(value);
     }
     
-  // public static final String ID_PK_COLUMN = "ID";
-   
+    public static final String ID_PK_COLUMN = "ID";
     public static final Property<Boolean> ENTLASSENE = new Property<Boolean>("entlassene");
     public static final Property<java.sql.Date> GEBURTSDATUM = new Property<java.sql.Date>("geburtsdatum","Geburtsdatum",4);
     public static final Property<Integer> GEHALT = new Property<Integer>("gehalt","Gehalt",3);
@@ -62,20 +68,11 @@ public class Angestellte extends CayenneDataObject{
                                                            Angestellte.GEBURTSDATUM,
                                                            Angestellte.ID};
     
-    
-    
-    
-  
-    
-
     public String getVollname() {
         String s;
         s=this.getName()+" "+this.getNachname();
         return s;
     }
-    
-    
-    
     
     public void setEntlassene(Boolean entlassene) {
         writeProperty(ENTLASSENE.getName(), entlassene);

@@ -107,9 +107,11 @@ public final class SchaechtePage extends TemplatePage {
         deleteLink.setAttribute("name", "Delete");
         deleteLink.setImageSrc("/images/remove.png");
         deleteLink.setTitle("Delete");
-        column = new Column("View/Edit");
+        column = new Column("View - Edit - Delete");
         column.setTextAlign("center");
-        AbstractLink[] links = new AbstractLink[] { viewLink, editLink,deleteLink };
+        AbstractLink l = new ActionLink(" ");
+        l.setDisabled(true);
+        AbstractLink[] links = new AbstractLink[] { viewLink, l, l, editLink, l, l, deleteLink };
         column.setDecorator(new LinkDecorator(table, links, "id"));
         column.setSortable(false);
         column.setWidth("auto");
@@ -122,7 +124,7 @@ public final class SchaechtePage extends TemplatePage {
                 Object value = formSuchen.searchField.getValue();                
                 if (type == Schaechte.ID.getId() || type == Schaechte.TIEF.getId()) {
                     try{
-                      Integer.parseInt(value.toString());
+                        Integer.parseInt(value.toString());
                     } catch (NumberFormatException e) {
                         formSuchen.searchField.setValue("");
                         type=0;

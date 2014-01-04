@@ -195,13 +195,13 @@ public class SchaechteForm extends Form{
         endeArbeit.setAttribute("name", "linkAction");
         tableAngestellteImSchacht.addColumn(new Column("toAngestellte.id","Id"));
         tableAngestellteImSchacht.addColumn(new Column("toAngestellte.vollname","Name"));
-        tableAngestellteImSchacht.setSortable(true);
         Column columnRemove=new Column("Action");
         columnRemove.setDecorator(new LinkDecorator(tableAngestellteImSchacht, endeArbeit, "toAngestellte.id"));
         columnRemove.setTextAlign("center");
         columnRemove.setSortable(false);
         columnRemove.setWidth("auto");
         tableAngestellteImSchacht.addColumn(columnRemove);
+        tableAngestellteImSchacht.setSortable(true);
         tableAngestellteImSchacht.setWidth("450px");
         tableAngestellteImSchacht.setDataProvider(new DataProvider<Zeit>() {
             @Override

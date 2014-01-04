@@ -1,3 +1,9 @@
+/** 
+ * Hochschule Offenburg, Dezember 2013
+ * Databanken Labor 3, Gruppe 13
+ * @author Nikolaev Andrey & Ostrovskaya Anna
+ */
+
 package de.dblab.domain;
 
 import java.util.List;
@@ -6,9 +12,12 @@ import de.dblab.service.cayenne.Property;
 import java.util.HashMap;
 import org.apache.cayenne.exp.Expression;
 
+/* 
+ * Class Schaechte beschreibt Tabelle Schaechte von Datenbank.
+ */
+
 public class Schaechte extends CayenneDataObject {
 
-    
     private static HashMap<Integer, String> columnSchaechte;
     private static HashMap<String, Expression> stateSchaechte;
     public static final String stateSchaechteArray[] = {"Alle","Aktiv","Inaktiv"};

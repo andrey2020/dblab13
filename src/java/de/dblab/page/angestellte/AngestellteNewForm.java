@@ -1,11 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/** 
+ * Hochschule Offenburg, Dezember 2013
+ * Databanken Labor 3, Gruppe 13
+ * @author Nikolaev Andrey & Ostrovskaya Anna
  */
+
 package de.dblab.page.angestellte;
 
 import de.dblab.domain.Angestellte;
-import de.dblab.page.DataBaseService;
+import de.dblab.page.HomePage;
 import java.util.Date;
 import org.apache.click.ActionListener;
 import org.apache.click.Control;
@@ -16,30 +18,38 @@ import org.apache.click.control.TextField;
 import net.sf.click.extras.control.CalendarField; 
 import org.apache.click.extras.control.IntegerField;
 
-/**
- *
- * @author anuta
+/* 
+ * Class AngestellteNewForm generiert HTML code auf der Seite AngestelltePage.htm
  */
+
 public class AngestellteNewForm extends Form implements ActionListener{
     private final CalendarField fieldGeburtsdatum = new CalendarField("gebutrtsdatum",true);
-    private final Submit newSubmit = new Submit("new");
-    private final DataBaseService dataBaseService = new DataBaseService();
     
     public AngestellteNewForm(){
         super("newform");
+        TextField nameField = new TextField("name",true);
+        TextField nachnameField = new TextField("nachname",true);
+        TextField stelleField = new TextField("stelle");
+        IntegerField gehaltField = new IntegerField("gehalt");
+        Submit newSubmit = new Submit("create");
+        
+        nameField.setMaxLength(45);
+        nachnameField.setMaxLength(45);
+        stelleField.setMaxLength(45);
+        gehaltField.setMaxLength(10);
         fieldGeburtsdatum.setDate(new Date(System.currentTimeMillis()));
         fieldGeburtsdatum.setStyle("brown");
-        FieldSet paymentFieldSet = new FieldSet("Neuer Angestellter");
-        paymentFieldSet.setStyle("background-color", "#f4f4f4");
-        paymentFieldSet.add(new TextField("name",true));
-        paymentFieldSet.add(new TextField("nachname",true));
-        paymentFieldSet.add(fieldGeburtsdatum);
-        paymentFieldSet.add(new TextField("stelle"));
-        paymentFieldSet.add(new IntegerField("gehalt"));
-        paymentFieldSet.add(newSubmit);
         newSubmit.setActionListener(this);
-        //.setAttribute("onclick", "newAng();");
-        this.add(paymentFieldSet);        
+        
+        FieldSet createFieldSet = new FieldSet("Neuer Angestellter");
+        createFieldSet.setStyle("background-color", "#f4f4f4");
+        createFieldSet.add(nameField);
+        createFieldSet.add(nachnameField);
+        createFieldSet.add(fieldGeburtsdatum);
+        createFieldSet.add(stelleField);
+        createFieldSet.add(gehaltField);
+        createFieldSet.add(newSubmit);
+        this.add(createFieldSet);        
     }
     
     public boolean onAction(Control source) {
@@ -48,7 +58,7 @@ public class AngestellteNewForm extends Form implements ActionListener{
             this.copyTo(angestellte);
             angestellte.setGeburtsdatum(fieldGeburtsdatum.getDate());
             angestellte.setEntlassene(false);
-            dataBaseService.saveObject(angestellte);
+            HomePage.dataBaseService.saveObject(angestellte);
             this.clearValues();
         } 
         return true;

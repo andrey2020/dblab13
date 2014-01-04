@@ -47,16 +47,22 @@ public class SchaechteEditPage extends TemplatePage {
         form.setButtonAlign("right");
         form.setJavaScriptValidation(true); 
         form.add(subFieldSet);
+        
+        
         TextField idVisibleField = new TextField("id");
-        idVisibleField.setDisabled(true);
         TextField nameField = new TextField("name", true);
-        nameField.setFocus(true);
+        IntegerField tiefField = new IntegerField("tief");
         Select leiterId = new Select("leiter_id","Leiter");
+        
+        idVisibleField.setDisabled(true);
+        nameField.setMaxLength(45);
+        nameField.setFocus(true);
         leiterId.addAll(HomePage.dataBaseService.getAngestellteName());
-
+        tiefField.setMaxLength(10);
+        
         subFieldSet.add(idVisibleField);
         subFieldSet.add(nameField);
-        subFieldSet.add( new IntegerField("tief"));
+        subFieldSet.add(tiefField);
         subFieldSet.add(leiterId);
         subFieldSet.add(new Checkbox("geschlossen"));
         form.setColumns(1);

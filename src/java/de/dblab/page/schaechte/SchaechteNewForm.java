@@ -24,15 +24,21 @@ import org.apache.click.extras.control.IntegerField;
 public class SchaechteNewForm extends Form implements ActionListener{
     public SchaechteNewForm(){
         super("newform");
+        TextField nameField = new TextField("name",true);
+        IntegerField tiefField = new IntegerField("tief");
+        Select leiterId = new Select("leiter_id","Leiter");
+        Submit newSubmit = new Submit("create");
+        
+        nameField.setMaxLength(45);
+        tiefField.setMaxLength(10);
+        leiterId.addAll(HomePage.dataBaseService.getAngestellteName());
+        newSubmit.setActionListener(this);
+        
         FieldSet createFieldSet = new FieldSet("Neuer Angestellter");
         createFieldSet.setStyle("background-color", "#f4f4f4");
-        createFieldSet.add(new TextField("name",true));
-        createFieldSet.add(new IntegerField("tief"));
-        Select leiterId=new Select("leiter_id","Leiter");
-        leiterId.addAll(HomePage.dataBaseService.getAngestellteName());
+        createFieldSet.add(nameField);
+        createFieldSet.add(tiefField);
         createFieldSet.add(leiterId);
-        Submit newSubmit = new Submit("new");
-        newSubmit.setActionListener(this);
         createFieldSet.add(newSubmit);
         this.add(createFieldSet);        
     }

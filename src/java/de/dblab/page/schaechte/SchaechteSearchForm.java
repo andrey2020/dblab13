@@ -34,8 +34,8 @@ public class SchaechteSearchForm  extends Form{
         searchFieldSet.add(searchField);
         searchFieldSet.add(typeSelect);
         searchFieldSet.add(inaktivSelect);
-        searchFieldSet.add(submit);
         searchFieldSet.add(sizeSelect);
+        searchFieldSet.add(submit);
         this.setColumns(3);
         
         searchField.setFocus(true);

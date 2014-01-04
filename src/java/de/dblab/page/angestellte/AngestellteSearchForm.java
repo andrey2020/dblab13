@@ -1,56 +1,51 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/** 
+ * Hochschule Offenburg, Dezember 2013
+ * Databanken Labor 3, Gruppe 13
+ * @author Nikolaev Andrey & Ostrovskaya Anna
  */
+
 package de.dblab.page.angestellte;
 
 import de.dblab.domain.Angestellte;
-import net.sf.click.extras.control.CalendarField;
-import org.apache.click.control.Field;
 import org.apache.click.control.FieldSet;
 import org.apache.click.control.Form;
 import org.apache.click.control.Select;
 import org.apache.click.control.Submit;
 import org.apache.click.control.TextField;
 
-/**
- *
- * @author anuta
+/* 
+ * Class AngestellteSearchForm generiert HTML code auf der Seite AngestelltePage.htm
  */
+
 public class AngestellteSearchForm extends Form{
-    public  TextField searchField;   
-    public final Select sizeSelect = new Select("pageSize","Seitengröße");
-    public final Select typeSelect = new Select("Typ","Wo?");
-    public final Select firedSelect = new Select("zeigenEntlassente","");
+    
+    protected final TextField searchField = new TextField("Suche","Was?");    
+    protected final Select sizeSelect = new Select("pageSize","Seitengröße");
+    protected final Select typeSelect = new Select("Typ","Wo?");
+    protected final Select firedSelect = new Select("zeigenEntlassente","");
 
     public AngestellteSearchForm(){
         super("form");
-        
-        searchField= new TextField("Suche","Was?") ; 
         Submit submit = new Submit("suchen");
-    
-        FieldSet paymentFieldSet = new FieldSet("Suchen");
-        paymentFieldSet.setStyle("background-color", "#f4f4f4");
-        this.add(paymentFieldSet);
+        FieldSet searchFieldSet = new FieldSet("Suchen");
+        searchFieldSet.setStyle("background-color", "#f4f4f4");
+        this.add(searchFieldSet);
         
-        paymentFieldSet.add(searchField);
-        searchField.setTabIndex(1);
-        searchField.setFocus(true);
-        paymentFieldSet.add(typeSelect);
-        paymentFieldSet.add(submit);
-        paymentFieldSet.add(firedSelect);
-        paymentFieldSet.add(sizeSelect);
+        searchFieldSet.add(searchField);
+        searchFieldSet.add(typeSelect);
+        searchFieldSet.add(firedSelect);
+        searchFieldSet.add(sizeSelect);
+        searchFieldSet.add(submit);
         this.setColumns(3);
         
+        searchField.setFocus(true);
         firedSelect.addAll(Angestellte.stateAngestellteArray);
         typeSelect.addAll(Angestellte.getColumnAngestellte());
-        sizeSelect.addAll(new String[] {"5", "10", "15", "20", "30", "40", "50", "100", "150", "200"});
+        sizeSelect.addAll(new String[] {"10", "15", "30", "50", "100", "150", "200"});
         sizeSelect.setAttribute("onchange", "form.submit();");
         typeSelect.setAttribute("onchange", "form.submit();");
         firedSelect.setAttribute("onchange", "form.submit();");
-        //searchField.setActionListener(this);
-        submit.setAttribute("onclick", "form.submit();");
-        
+        submit.setAttribute("onclick", "form.submit();");        
         this.restoreState(getContext());
     }
 
