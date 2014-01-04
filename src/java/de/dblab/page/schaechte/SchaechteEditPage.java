@@ -25,9 +25,9 @@ import org.apache.click.extras.control.IntegerField;
 
 public class SchaechteEditPage extends TemplatePage {
 
-    private Form form = new Form("form");
-    private HiddenField referrerField = new HiddenField("referrer", String.class);
-    private HiddenField idField = new HiddenField("id", Integer.class);
+    private final Form form = new Form("form");
+    private final HiddenField referrerField = new HiddenField("referrer", String.class);
+    private final HiddenField idField = new HiddenField("id", Integer.class);
 
     // Bindable variables can automatically have their value set by request parameters
     @Bindable protected Integer id;
