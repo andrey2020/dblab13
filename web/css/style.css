@@ -25,15 +25,15 @@ div.page {
 }
 
 div.header {
-  position: relative;
-  height: 95px;
+    position: relative;
+    height: 95px;
 }
 
 div.title-icon {
-  position:absolute;
-  top: 12px;
-  left: 15px;
-  z-index:10;
+    position:absolute;
+    top: 12px;
+    left: 15px;
+    z-index:10;
 }
 
 div.title-left {
@@ -48,8 +48,8 @@ div.title-left {
 }
 
 div.title-hosted {
-  position: absolute;  
-  right: 0px;
+    position: absolute;  
+    right: 0px;
 }
 
 div.title-hosted p, div.title-hosted a {
@@ -71,20 +71,20 @@ div.header-color {
 }
 
 div.contentbody {
-  width: calc(100%-2px);
-  height: 465px;
-  margin: 0 auto;
-  border: #a80402 solid 2px;
+    width: calc(100%-2px);
+    height: 465px;
+    margin: 0 auto;
+    border: #a80402 solid 2px;
 }
 
 
 #menu {
-position:  absolute;
-margin-top: -18px;
-width: 100px;
-height: 515px;
-border: #a80402 solid 2px;
-text-align: center;
+    position:  absolute;
+    margin-top: -18px;
+    width: 100px;
+    height: 515px;
+    border: #a80402 solid 2px;
+    text-align: center;
 }
 
 #content {
@@ -99,10 +99,10 @@ text-align: center;
     border: #a80402 solid 2px;
 }
 button.button {
-font-family: Arial, Helvetica, "Sans Serif";
-font-size: 9pt;
-width: 90px;
-height: 40px;
+    font-family: Arial, Helvetica, "Sans Serif";
+    font-size: 9pt;
+    width: 90px;
+    height: 40px;
 }
 
 button.buttonReport {
@@ -112,20 +112,18 @@ button.buttonReport {
     left: 5px;
     bottom: 12px;
     font-weight: bold;
-    
     font-family: Arial, Helvetica, "Sans Serif";
-font-size: 9pt;
-    
+    font-size: 9pt;
     width: 90px;
     height: 40px;
 }
 
 div.content h2 {
-  margin: 0;
+    margin: 0;
 }
 
 td.fields {
-   vertical-align: top; 
+    vertical-align: top; 
 }
 
 td.label {

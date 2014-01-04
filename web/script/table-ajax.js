@@ -7,7 +7,7 @@
  
  
 /*
-  Mithilfe dieses Script realesieren wir Ajax-Technologien in unserem Projekt
+  Mithilfe dieses Scripts realesieren wir Ajax-Technologien in unserem Projekt
 */
 
 jQuery(document).ready(function() {
